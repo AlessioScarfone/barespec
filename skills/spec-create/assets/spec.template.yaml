@@ -1,0 +1,71 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# feature.yaml
+# The file MUST begin with the `feature` top-level key, and MAY contain
+# `components` and `constraints` top-level keys. Group keys must be unique across
+# both `components` and `constraints`.
+# ──────────────────────────────────────────────────────────────────────────────
+feature:
+  name: spec-name                       # required; lowercase chars, numbers, dashes, underscores; matches the folder name
+  version: 0.1.0                        # optional; SemVer
+  description: >-
+    2-3 sentences describing what this feature does, who benefits from it,
+    and why it matters.
+  prerequisites:                        # optional; external dependencies outside this spec
+    - External dependency or "None"
+
+  # ── barespec tracking extension (not part of the acai core spec) ──
+  # Read by the framework to manage status and inter-spec dependencies.
+  status: draft                         # draft | ready | in-progress | done
+  requires: []                          # spec names that must reach `done` before this one
+  created: YYYY-MM-DD
+  updated: YYYY-MM-DD
+
+# ──────────────────────────────────────────────────────────────────────────────
+# components — functional requirements grouped by area.
+# Group keys are UPPER_SNAKE (upper-case chars, numbers, underscores) and unique.
+# Each requirement is an observable, testable (pass/fail) behavior.
+# Reference any requirement by its ACID: <feature-name>.<GROUP_KEY>.<ID>
+# (e.g. spec-name.LOGIN.1-1). The implementation plan tags tasks with these IDs.
+# ──────────────────────────────────────────────────────────────────────────────
+components:
+  COMPONENT_KEY:                        # e.g. LOGIN, EXPORT
+    name: Short human label             # optional
+    description: What this component group covers.   # optional
+    requirements:
+      1: First functional requirement (observable, testable behavior).
+      2: Second functional requirement.
+      2-1: Sub-requirement of 2 (max 1 level deep; never use `-0`).
+      2-note: Optional inline note attached to requirement 2.
+
+# ──────────────────────────────────────────────────────────────────────────────
+# constraints — cross-cutting / non-functional requirements (performance,
+# security, data privacy, accessibility). Same shape as components.
+# Omit this whole section if there are none.
+# ──────────────────────────────────────────────────────────────────────────────
+constraints:
+  CONSTRAINT_KEY:                       # e.g. AUTH, PERF
+    name: Short human label             # optional
+    description: Additional engineering constraints. # optional
+    requirements:
+      1: Cross-cutting requirement (observable, testable behavior).
+
+# ──────────────────────────────────────────────────────────────────────────────
+# barespec extensions — optional context that shapes implementation.
+# Not part of the acai core spec.
+# ──────────────────────────────────────────────────────────────────────────────
+non_goals:
+  - What is explicitly out of scope for this spec.
+
+technical_notes: >-
+  Implementation hints, architectural considerations, database schemas,
+  API details, or technical constraints.
+
+open_questions:
+  - id: 1
+    question: Unresolved question that could affect implementation.
+    affects: <ACID or "general">
+    status: open
+
+# Filled by spec-implement after implementation completes:
+# files changed, follow-ups, and notes. Leave empty until then.
+development_notes:

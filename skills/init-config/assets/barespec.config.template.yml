@@ -1,0 +1,49 @@
+# barespec configuration file
+# Place this file at: barespec/barespec.config.yml
+#
+# MINI-SDD-HOOKS
+# -----
+# Each step (context, spec, plan, implement) supports optional pre and post hooks.
+# A hook is a plain-text instruction that the AI model will follow as an explicit
+# step before (pre) or after (post) the skill's main logic.
+#
+# - pre hooks run before the skill starts its main workflow
+# - post hooks run after the skill has completed all its steps
+#
+# You can define multiple hooks per event — they are executed in order.
+# All hooks are optional. Remove or comment out any you don't need.
+
+# EXAMPLE CONFIGURATION
+# hooks:
+#   context:
+#     pre:
+#       # Example: remind the model to check for duplicate context files
+#       - "Check whether a context.md already exists in a non-standard location and warn the user before proceeding."
+#     post:
+#       # Example: update the root README with a summary of the context
+#       - "After writing context.md, update the project README.md 'Overview' section to match the new product description."
+
+#   spec:
+#     pre:
+#       # Example: enforce git hygiene before creating a spec
+#       - "Before creating the spec, check if there are any uncommitted changes in the working directory and remind the user to commit or stash them."
+#     post:
+#       # Example: keep a CHANGELOG entry for every new spec
+#       - "After writing spec.yaml, append a one-line entry to CHANGELOG.md under '## Unreleased' noting the new spec name and date."
+
+#   plan:
+#     pre:
+#       # Example: ensure the plan reflects the latest spec
+#       - "Re-read the latest spec.yaml before generating tasks to ensure the plan matches the current contract."
+#     post:
+#       # Example: report the planned scope
+#       - "After writing plan.md, summarize the task count and estimated scope back to the user."
+
+#   implement:
+#     pre:
+#       # Example: run existing tests before touching code
+#       - "Before starting implementation, remind the user to run the existing test suite and confirm it is green."
+#     post:
+#       # Example: enforce linting and tests after every implementation
+#       - "After all tasks are complete, remind the user to run 'npm run lint && npm test' (or the equivalent for this project's stack) and fix any failures before closing the spec."
+#       - "Extract key lessons learned from the implementation work and update context.md to reflect any new insights about the architecture, patterns, or constraints discovered during implementation."

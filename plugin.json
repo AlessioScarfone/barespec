@@ -1,0 +1,13 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "barespec",
+  "version": "0.2.0",
+  "description": "Minimal Spec-Driven Development for AI coding agents.",
+  "license": "MIT",
+  "author": {
+    "name": "Alessio Scarfone",
+    "url": "https://github.com/AlessioScarfone"
+  },
+  "keywords": ["spec-driven", "development", "AI", "coding", "agents"],
+  "repository": "https://github.com/AlessioScarfone/barespec"
+}
