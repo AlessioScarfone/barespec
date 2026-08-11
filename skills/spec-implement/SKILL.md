@@ -64,7 +64,8 @@ For each unchecked task in `plan.md` in order:
    > "🔨 Task N/M: \<task description\>"
 2. Implement the code changes required for this task.
 3. Keep changes minimal and focused on the task.
-4. Mark the task complete **in `plan.md`**: `- [ ]` → `- [x]` right after the implementation of that task.
+4. If the task involves writing or updating tests, follow [references/testing-guidelines.md](./references/testing-guidelines.md).
+5. Mark the task complete **in `plan.md`**: `- [ ]` → `- [x]` right after the implementation of that task.
 
 **Pause if:**
 - Task is unclear → ask for clarification
