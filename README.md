@@ -4,6 +4,22 @@ A minimal spec-driven development framework for AI coding agents.
 
 > Compliant with the [Agent Plugins 1.0.0](https://agent-plugins.org/) specification.
 
+---
+
+- [BareSpec](#barespec)
+  - [Quick Start](#quick-start)
+  - [Skills](#skills)
+    - [`/init-context` — Project Context](#init-context--project-context)
+    - [`/spec-create` — Feature Spec](#spec-create--feature-spec)
+    - [`/spec-plan` — Implementation Plan](#spec-plan--implementation-plan)
+    - [`/spec-implement` — Implement](#spec-implement--implement)
+  - [Standard Workflow](#standard-workflow)
+  - [`/init-config` — Customize Workflow with Custom Pre/Post Hooks](#init-config--customize-workflow-with-custom-prepost-hooks)
+  - [`barespec-guide` — Autonomous Framework Knowledge Base](#barespec-guide--autonomous-framework-knowledge-base)
+  - [Output File Structure](#output-file-structure)
+
+---
+
 ## Quick Start
 
 Run the skills as slash commands in any compatible AI coding agent:
@@ -218,7 +234,7 @@ A background knowledge skill that is **not a slash command**. It is automaticall
 
 ---
 
-## File Structure (after use)
+## Output File Structure 
 
 ```
 your-project/
