@@ -1,6 +1,6 @@
 # BareSpec
 
-A minimal spec-driven development framework for AI coding agents. Four skills, one workflow: define context, write specs, plan, implement features.
+A minimal spec-driven development framework for AI coding agents.
 
 > Compliant with the [Agent Plugins 1.0.0](https://agent-plugins.org/) specification.
 
