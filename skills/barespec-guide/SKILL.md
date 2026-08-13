@@ -4,10 +4,10 @@ description: >-
   Autonomous knowledge base for the mini-SDD framework. Always read this skill
   when working on a mini-SDD project or when any message mentions mini-SDD,
   init-context, spec-create, spec-plan, spec-implement,
-  init-config, context.md, spec.yaml, plan.md, hooks config, or
+  spec-code-review, init-config, context.md, spec.yaml, plan.md, hooks config, or
   spec-driven development. Do not use for
-  creating context files, writing specs, planning, or implementing features —
-  those have their own skills.
+  creating context files, writing specs, planning, implementing features, or
+  reviewing code — those have their own skills.
 user-invocable: false
 ---
 
@@ -29,6 +29,7 @@ context → spec → plan → implement → repeat
 | Feature Spec | `/spec-create` | Define a requirement contract (`spec.yaml`) |
 | Implementation Plan | `/spec-plan` | Turn a spec into an ordered, testable task plan (`plan.md`) |
 | Implement | `/spec-implement` | Execute the task plan for a spec |
+| Code Review | `/spec-code-review` | Two-axis, read-only review of a diff against Coding Standards and the Spec |
 | Hook Config | `/init-config` | Configure custom pre/post hooks for any workflow step |
 
 The **barespec** agent orchestrates these skills — it reads project state and routes the user to the correct next action.
@@ -58,6 +59,8 @@ The **barespec** agent orchestrates these skills — it reads project state and 
 **Step 3 — Plan:** Reads `spec.yaml`, breaks its requirements into ordered, testable tasks following the task rules, writes `plan.md`. Advances the spec to `status: ready`.
 
 **Step 4 — Implement:** Reads tasks from `plan.md` one by one, marks checkboxes, updates `feature.status` (`in-progress` → `done`). On completion: unlocks dependent specs, fills `development_notes` in `spec.yaml`.
+
+**Optional — Code Review:** `/spec-code-review [fixed-point] [spec-name-or-description]` can run at any point after step 2 — it never advances the workflow itself, only reports findings for the user to act on via the other skills.
 
 ---
 
@@ -175,6 +178,14 @@ A requirement is referenced by its **ACID**: `<feature-name>.<GROUP_KEY>.<ID>` (
 - Runs the hook interview: all eight events in one message, pre-filled with current values.
 - Writes (or overwrites) the config; shows the final file content. Never writes empty hook lists.
 
+### `/spec-code-review`
+
+- Read-only: never edits source files, `plan.md` checkboxes, or `feature.status`.
+- Fixed point (commit/branch/tag) is optional — with none given and local changes present, reviews `git diff HEAD` (working tree + staged) instead of asking.
+- Resolves the spec to review against, in order: argument → branch/commit-message match → recently-updated `in-progress`/`done` spec → ask the user → a user-supplied one-line intent description → skip the Spec axis.
+- Runs two parallel sub-agents — Coding Standards (`context.md`, repo standards docs, Fowler smell baseline) and Spec (`spec.yaml` requirements + `plan.md` tasks) — and reports both without merging or reranking findings.
+- Ends with a hand-off to `/spec-implement`, `/spec-create`, or `/spec-plan` — it never applies the fixes itself.
+
 ---
 
 ## Hook system
@@ -234,6 +245,7 @@ When determining the current state of a mini-SDD project or deciding what to do 
 | Unblocked `ready` specs exist | `/spec-implement <spec-name>` |
 | All specs `done`, nothing in-progress | `/spec-create <next-feature>` |
 | Hooks not configured and user wants customisation | `/init-config` |
+| User wants to check a diff/branch/PR against standards or spec | `/spec-code-review [fixed-point] [spec-name]` |
 
 **State summary format** (use when reporting state to the user):
 
