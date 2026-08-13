@@ -13,6 +13,7 @@ A minimal spec-driven development framework for AI coding agents.
     - [`/spec-create` — Feature Spec](#spec-create--feature-spec)
     - [`/spec-plan` — Implementation Plan](#spec-plan--implementation-plan)
     - [`/spec-implement` — Implement](#spec-implement--implement)
+    - [`/spec-code-review` — Two-Axis Code Review](#spec-code-review--two-axis-code-review)
   - [Standard Workflow](#standard-workflow)
   - [`/init-config` — Customize Workflow with Custom Pre/Post Hooks](#init-config--customize-workflow-with-custom-prepost-hooks)
   - [`barespec-guide` — Autonomous Framework Knowledge Base](#barespec-guide--autonomous-framework-knowledge-base)
@@ -132,6 +133,50 @@ Executes the task list in `plan.md` for a given spec.
 - If `plan.md` has no tasks: blocks and asks you to run `/spec-plan` first
 
 **Input:** Spec name (e.g., `/spec-implement user-auth`). If omitted, lists available specs with `ready` or `in-progress` status. Ready specs whose dependencies are not yet complete are shown as not implementable yet.
+
+---
+
+### `/spec-code-review` — Two-Axis Code Review
+
+Reviews the diff between `HEAD` and a fixed point (commit, branch, tag, or merge-base) — or, when no fixed point is given, your uncommitted local changes — along two independent axes, each run by a parallel sub-agent so neither pollutes the other's context. **Report-only — it never applies fixes, edits source files, checks off plan tasks, or changes `feature.status`.**
+
+- **Coding Standards** — does the diff follow the conventions in `context.md`, any repo standards docs (`AGENTS.md`, `CONTRIBUTING.md`, ...), and a built-in Fowler code-smell baseline?
+- **Spec** — does the diff implement what the spec asked for? Resolved, in order: a spec name passed as an argument, a spec folder matching the branch/commit messages, a recently-updated `in-progress`/`done` spec, or asking the user. As a last resort, with no spec file, it falls back to a one-line intent description supplied at invocation; with neither, the Spec axis is skipped.
+
+**What it produces:** a side-by-side report — `## Coding Standards` and `## Spec` findings, never merged or reranked — plus a one-line summary and pointers to the next command (`/spec-implement`, `/spec-create`, `/spec-plan`).
+
+**When to use:**
+- Reviewing a branch or PR before merging
+- Checking work-in-progress changes against the spec that produced them
+- Auditing an implemented spec for scope creep or missed requirements
+
+**Input:** `/spec-code-review [fixed-point] [spec-name-or-description]`. All arguments are optional.
+
+**Example invocations:**
+```
+/spec-code-review
+# No arguments — reviews uncommitted local changes (working tree + staged)
+# against HEAD. Spec is auto-resolved from the current branch name.
+
+/spec-code-review main
+# Reviews committed changes on the current branch since it diverged from
+# main. Spec is auto-resolved from the branch name or commit messages.
+
+/spec-code-review main user-authentication
+# Same diff, but reviews against a specific spec instead of relying on
+# auto-resolution.
+
+/spec-code-review main "adds rate limiting to the login endpoint"
+# No spec.yaml exists yet — reviews the diff against a one-line
+# description of intent instead.
+
+/spec-code-review v1.2.0
+# Reviews everything shipped since tag v1.2.0. Spec is still auto-resolved
+# (branch name, commit messages, or a recently-updated spec) — asked only
+# if nothing matches.
+```
+
+If the working tree is clean and no fixed point is given, the skill asks for one — there is nothing local to review.
 
 ---
 
