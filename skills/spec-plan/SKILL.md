@@ -44,16 +44,14 @@ Check `./barespec/barespec.config.yml` for `hooks.plan.pre` and `hooks.plan.post
 1. Read the spec content: `feature.description`, `components` requirements, `constraints`, non-goals, prerequisites, technical notes.
 2. Break the spec into tasks following the rules in [references/task-rules.md](./references/task-rules.md). Tag every task with the ACID(s) it satisfies, e.g. `_(LOGIN.1)_` (the `<GROUP_KEY>.<ID>` form; the full ACID is `<spec-name>.<GROUP_KEY>.<ID>`).
 3. If any open questions or assumptions were noted in the spec, ask the user for clarification before finalizing the tasks.
-4. Present the task list to the user:
-   > "📋 Tasks for `<spec-name>`:"
+4. Write `plan.md` directly using `assets/plan.template.md` as the base, filling all the sections. Write to `./barespec/specs/<spec-name>/plan.md`. Do not ask for confirmation before writing — the user can request adjustments afterwards.
+5. Advance the spec: in the `feature` block set `status: ready` and `updated: YYYY-MM-DD`. Do not change any requirement content.
+6. Confirm to the user:
+   > "✅ Created `<spec-name>/plan.md` with N tasks and set `<spec-name>/spec.yaml` to status: ready."
+   > "📋 Tasks:"
    > 1. \<task 1\>
    > 2. \<task 2\>
-5. Ask: _"Does this task breakdown look good? Any adjustments?"_
-6. After confirmation, write `plan.md` using `assets/plan.template.md` as the base, filling all the sections. Write to `./barespec/specs/<spec-name>/plan.md`.
-7. Advance the spec: in the `feature` block set `status: ready` and `updated: YYYY-MM-DD`. Do not change any requirement content.
-8. Confirm to the user:
-   > "✅ Created `<spec-name>/plan.md` with N tasks and set `<spec-name>/spec.yaml` to status: ready.
-   > Next: run `/spec-implement <spec-name>` to execute the plan."
+   > "Let me know if you'd like any adjustments. Next: run `/spec-implement <spec-name>` to execute the plan."
 
 ---
 
@@ -66,11 +64,10 @@ Use this when a `plan.md` already exists for the spec.
 3. Decide based on the user's choice in the Entry point:
    - **Regenerate** → replace the task list with a fresh breakdown derived from the current spec.
    - **Append** → **append** a new dated section to the existing `plan.md` using `assets/plan.template.md` as the base. Do **not** remove existing tasks — preserve the history of previous implementations.
-4. Present the new/updated task list and ask: _"Does this look good? Any adjustments?"_
-5. After confirmation, write `plan.md`.
-6. Advance the spec: in the `feature` block set `status: ready` and `updated: YYYY-MM-DD`.
-7. Confirm:
-   > "✅ Updated `<spec-name>/plan.md` (N tasks) and set `<spec-name>/spec.yaml` to status: ready."
+4. Write `plan.md` directly. Do not ask for confirmation before writing — the user can request adjustments afterwards.
+5. Advance the spec: in the `feature` block set `status: ready` and `updated: YYYY-MM-DD`.
+6. Confirm:
+   > "✅ Updated `<spec-name>/plan.md` (N tasks) and set `<spec-name>/spec.yaml` to status: ready. Let me know if you'd like any adjustments."
 
 ---
 
