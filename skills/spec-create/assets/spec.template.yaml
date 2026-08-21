@@ -53,18 +53,25 @@ constraints:
 # barespec extensions — optional context that shapes implementation.
 # Not part of the acai core spec.
 # ──────────────────────────────────────────────────────────────────────────────
+
+# Scope exclusions settled during the requirement interview.
 non_goals:
   - What is explicitly out of scope for this spec.
 
+# Technical choices and their rationale, as settled during the requirement interview.
 technical_notes: >-
   Implementation hints, architectural considerations, database schemas,
   API details, or technical constraints.
 
+# EXCEPTION — deferred external blockers only. A spec is written after every open
+# point has been resolved, so this section is normally absent: omit it entirely.
+# Add an entry only when the answer depends on a party or fact outside the session
+# AND the user explicitly confirmed the deferral.
 open_questions:
-  - id: 1
-    question: Unresolved question that could affect implementation.
+  - question: What is still undecided.
+    blocked_by: The external party, event, or fact the answer depends on.
     affects: <ACID or "general">
-    status: open
+    deferred_on: YYYY-MM-DD
 
 # Filled by spec-implement after implementation completes:
 # files changed, follow-ups, and notes. Leave empty until then.

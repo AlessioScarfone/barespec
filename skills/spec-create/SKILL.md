@@ -34,22 +34,21 @@ Check `./barespec/barespec.config.yml` for `hooks.spec.pre` and `hooks.spec.post
 
 ## Creation flow
 
-### 1. Clarify the requirement
+### 1. Gather the facts
 
-Ask the user the following in a **single numbered message** (skip questions already answered in the input or inferred from initial context):
+Before asking the user anything, collect what the environment already knows:
 
-1. **What should this feature do?** — Describe the desired behavior in 2–3 sentences.
-2. **Who is the user?** — Who benefits from this feature?
-3. **Functional requirements** — List the observable behaviors the feature must have. These become the numbered `requirements` under `components`, grouped by area (e.g. a `LOGIN` group, an `EXPORT` group).
-4. **Cross-cutting constraints** — Any non-functional requirements (security, performance, data privacy, accessibility)? These become the `constraints` section.
-5. **Technical notes** — Any implementation hints, API details, or architectural considerations?
+- Mine the `./barespec/context.md` you read at entry for stack, architecture, and conventions.
+- Read every `./barespec/specs/*/spec.yaml` and infer whether this spec depends on other specs being completed first. Populate `requires:` from that analysis — ask the user only when the relationship is genuinely ambiguous, and ask it as part of a round.
+- Dispatch an `Explore` subagent for any codebase fact a question would otherwise depend on.
 
-After collecting the requirements, inspect the existing specs under `./barespec/specs/` and infer whether this spec depends on other specs being completed first. Populate `requires:` automatically from that analysis.
+### 2. Run the round-based interview
 
-Ask the user about dependencies only if the relationship is ambiguous:
-> "I found that `<spec-name>` may need `<dependency-spec>` to be completed first. Should I mark it as a dependency?"
+Interview the user in rounds until every open point is resolved, following [references/interview.md](./references/interview.md). The five topics of the round-1 seed (behavior, user, functional requirements, cross-cutting constraints, technical notes) are a starting point, not a fixed questionnaire — later rounds follow from what the answers open up.
 
-### 2. Generate the spec file
+**Gate — do not write `spec.yaml` while the frontier is non-empty.** Close the interview with a decision summary and an explicit confirmation from the user that you have reached a shared understanding.
+
+### 3. Generate the spec file
 
 Read the template from `assets/spec.template.yaml` and fill it in using the gathered information, see the template header for the rules.
 
@@ -59,10 +58,12 @@ Read the template from `assets/spec.template.yaml` and fill it in using the gath
 - Group functional requirements into `components` with `UPPER_SNAKE` keys (e.g. `LOGIN`, `EXPORT`), unique across components and constraints. Number each requirement as an integer (`1`, `2`); use `<N>-<M>` for sub-requirements (max 1 level, never `-0`). A requirement's ACID is `<spec-name>.<GROUP_KEY>.<ID>`.
 - Put non-functional / cross-cutting requirements under `constraints`; omit the section entirely if there are none.
 - Keep each requirement an observable, testable (pass/fail) behavior. Be descriptive, not prescriptive.
+- Map every settled decision to its destination field using the mapping table in [references/interview.md](./references/interview.md). Scope exclusions go to `non_goals`, technical choices and rationale to `technical_notes`.
+- Omit `open_questions` entirely unless the user explicitly confirmed a deferral on an external blocker; in that case record `blocked_by` and the affected ACID.
 - In the `feature` block set the barespec tracking fields: `requires: [<spec-name>, ...]` from the inferred dependencies, `created: YYYY-MM-DD`, `updated: YYYY-MM-DD`, and `status: draft`.
 - Treat unmet `requires` as a derived blocking condition during implementation, not as a separate stored status.
 
-### 3. Confirm and hand off to the plan
+### 4. Confirm and hand off to the plan
 
 Confirm to the user and point them to the next step:
 > "✅ Created `<spec-name>/spec.yaml` (status: draft).
@@ -76,13 +77,15 @@ Use this when a spec already exists and the user chose to update it.
 
 1. Read the current spec from `./barespec/specs/<spec-name>/spec.yaml`.
 2. Ask: _"What needs to change? New requirements, updated constraints, scope change?"_
-3. Apply the changes to the relevant `components` / `constraints` / `feature` fields of `spec.yaml`. When adding requirements, append new numbers (or `<N>-<M>` sub-requirements) so existing IDs/ACIDs stay stable.
-4. Re-inspect the other specs in `./barespec/specs/` and re-infer `requires:` from the updated spec content.
-5. In the `feature` block set: `requires: [<spec-name>, ...]`, `updated: YYYY-MM-DD`, `status: draft`.
+3. Run the round-based interview from [references/interview.md](./references/interview.md), scoped to the delta: reopen only the branches of the design tree the change touches, and never re-ask what the current spec already settles. The same gate applies — resolve everything, summarise the decisions, get confirmation, then write.
+4. Apply the changes to the relevant `components` / `constraints` / `feature` fields of `spec.yaml`. When adding requirements, append new numbers (or `<N>-<M>` sub-requirements) so existing IDs/ACIDs stay stable.
+5. Re-inspect the other specs in `./barespec/specs/` and re-infer `requires:` from the updated spec content.
+6. In the `feature` block set: `requires: [<spec-name>, ...]`, `updated: YYYY-MM-DD`, `status: draft`.
    - Setting `status: draft` signals that no `plan.md` exists yet, or that it is out of date and must be regenerated by `spec-plan`.
    - If some `requires` are not yet `done`, keep that as a derived blocking condition for implementation.
-6. Show a summary of what changed and which dependencies were inferred.
-7. Confirm and point to the next step:
+7. Drop any `open_questions` entry the update has resolved; delete the section when it becomes empty.
+8. Show a summary of what changed and which dependencies were inferred.
+9. Confirm and point to the next step:
    > "✅ Updated `<spec-name>/spec.yaml` (status: draft).
    > The spec changed — run `/spec-plan <spec-name>` to (re)generate the implementation plan."
 
@@ -102,11 +105,12 @@ This skill sets `status: draft` — the spec contract exists but has no implemen
 - Express requirements as observable, testable (pass/fail) behaviors with stable ACIDs (`<spec-name>.<GROUP_KEY>.<ID>`).
 - Focus on functional behavior and key constraints; omit obvious or purely cosmetic requirements.
 - Do **not** generate `plan.md` here — that is the responsibility of `spec-plan`.
-- If the user is vague, ask one follow-up, then proceed with best effort and record assumptions in `open_questions`.
+- Resolve every open point during the interview and fold the answers into the spec fields. A written spec contains no unanswered questions.
 
 ## Error handling
 
 - **Spec name conflict**: If the derived dash-case name collides with an existing unrelated spec, show both and ask the user to confirm or pick a different name.
 - **No input provided**: Ask _"What feature or requirement do you want to spec?"_ before doing anything else.
 - **Spec folder not writable / path missing**: Create the `./barespec/specs/<spec-name>/` directory if it does not exist before writing.
-- **User abandons the interview mid-way**: Save whatever was collected, leave unanswered fields as their template placeholders, and confirm the partial spec was written.
+- **User abandons the interview mid-way**: Adopt your recommended answer for every remaining frontier question, list those adopted answers explicitly, and write a complete spec. Never leave template placeholders in `components` or `constraints`.
+- **User defers a question**: Only accept the deferral when the answer depends on a party or fact outside this session and the user confirms it. Record it in `open_questions` with `blocked_by` and the affected ACID. Plain uncertainty is not a blocker — put the question back to the user and settle it.

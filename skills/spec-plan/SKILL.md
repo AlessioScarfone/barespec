@@ -43,7 +43,7 @@ Check `./barespec/barespec.config.yml` for `hooks.plan.pre` and `hooks.plan.post
 
 1. Read the spec content: `feature.description`, `components` requirements, `constraints`, non-goals, prerequisites, technical notes.
 2. Break the spec into tasks following the rules in [references/task-rules.md](./references/task-rules.md). Tag every task with the ACID(s) it satisfies, e.g. `_(LOGIN.1)_` (the `<GROUP_KEY>.<ID>` form; the full ACID is `<spec-name>.<GROUP_KEY>.<ID>`).
-3. If any open questions or assumptions were noted in the spec, ask the user for clarification before finalizing the tasks.
+3. If the spec carries `open_questions`, they are external blockers the user already agreed to defer. Show them and ask whether they are now unblocked: if yes, send the user to `/spec-create` to fold the answer into the spec; if no, plan around the blocker. Do not re-run the requirement interview here.
 4. Write `plan.md` directly using `assets/plan.template.md` as the base, filling all the sections. Write to `./barespec/specs/<spec-name>/plan.md`. Do not ask for confirmation before writing — the user can request adjustments afterwards.
 5. Advance the spec: in the `feature` block set `status: ready` and `updated: YYYY-MM-DD`. Do not change any requirement content.
 6. Confirm to the user:
@@ -96,5 +96,5 @@ This skill advances a spec from `draft` → `ready` once a plan exists. It never
 
 - **No spec selected / not found**: List available specs and ask the user to choose, or tell them to run `/spec-create` first.
 - **Spec has no content to plan**: If `spec.yaml` has no requirements or only placeholders, ask the user to complete it with `/spec-create` before planning.
-- **Open questions in the spec**: Ask for clarification before finalizing tasks; if unanswered, note the assumption in the plan and proceed with best effort.
+- **Open questions in the spec**: `open_questions` records deferred external blockers, not missing requirements. Ask whether the blocker has lifted; if it has, hand off to `/spec-create` before planning the affected tasks. If it has not, plan the unblocked tasks and note the blocked ones in the plan.
 - **Plan folder not writable / path missing**: Create the spec folder if it does not exist before writing.

@@ -49,7 +49,7 @@ Creates or updates `barespec/context.md`, the single source of truth that all ot
 - After completing a feature that changes the architecture or stack
 - When onboarding AI agents to a codebase
 
-The skill inspects the codebase automatically, then asks targeted questions to fill in gaps.
+The skill inspects the codebase automatically, then interviews you in rounds to close the remaining gaps.
 
 ---
 

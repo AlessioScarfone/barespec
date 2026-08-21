@@ -52,9 +52,9 @@ The **barespec** agent orchestrates these skills — it reads project state and 
    Repeat from step 2 for the next feature
 ```
 
-**Step 1 — Context:** Inspects the codebase (README, manifests, CI, source dirs), asks targeted questions for gaps, writes `./barespec/context.md`. Re-run after architectural changes.
+**Step 1 — Context:** Inspects the codebase (README, manifests, CI, source dirs), then interviews the user in rounds to close the remaining gaps, writes `./barespec/context.md`. Re-run after architectural changes.
 
-**Step 2 — Spec:** Asks clarifying questions (feature, user, functional requirements, cross-cutting constraints, tech notes), infers dependencies from existing specs, writes `spec.yaml` (acai `feature.yaml` format — `feature` + `components` + `constraints`). Sets `feature.status: draft`.
+**Step 2 — Spec:** Interviews the user in rounds (design tree + frontier, one recommended answer per question), finding environment facts itself instead of asking. Every open point is resolved before anything is written; the answers are folded into the spec fields. Infers `requires:` from existing specs, writes `spec.yaml` (acai `feature.yaml` format — `feature` + `components` + `constraints`). Sets `feature.status: draft`.
 
 **Step 3 — Plan:** Reads `spec.yaml`, breaks its requirements into ordered, testable tasks following the task rules, writes `plan.md`. Advances the spec to `status: ready`.
 
@@ -103,7 +103,8 @@ constraints:              # cross-cutting / non-functional requirements (optiona
     requirements:
       1: ...
 
-# barespec extensions: non_goals, technical_notes, open_questions, development_notes
+# barespec extensions: non_goals, technical_notes, development_notes
+# open_questions is exceptional — deferred external blockers only, normally absent
 ```
 
 A requirement is referenced by its **ACID**: `<feature-name>.<GROUP_KEY>.<ID>` (e.g. `my-feature.LOGIN.1-1`).
@@ -145,15 +146,15 @@ A requirement is referenced by its **ACID**: `<feature-name>.<GROUP_KEY>.<ID>` (
 ### `/init-context`
 
 - If `context.md` exists → summarises it, asks: update or overwrite?
-- **Creation:** runs codebase reconnaissance (README, manifests, CI, source dirs), asks up to 5 targeted questions in one message, fills and writes `context.md`.
+- **Creation:** runs codebase reconnaissance (README, manifests, CI, source dirs), then interviews the user in rounds until the frontier is empty — each round numbers its questions and carries a recommended answer. Fills and writes `context.md` once the user confirms the decision summary.
 - **Update:** reads current file, applies only confirmed changes, refreshes `Last updated`.
 - Reads `hooks.context.pre` before entry and `hooks.context.post` after completion.
 
 ### `/spec-create`
 
 - Reads `context.md` for background. Derives a dash-case spec name. Checks for an existing spec and asks to update or create new if found.
-- **Creation:** single clarification message (feature description, user, functional requirements, cross-cutting constraints, technical notes). Infers `requires:` from existing specs. Writes `spec.yaml` (`feature` + `components` + `constraints`) and sets `feature.status: draft`. Hands off to `/spec-plan`.
-- **Update:** edits `spec.yaml` requirements, refreshes `feature.updated`, and resets `feature.status: draft` so the plan can be regenerated. Never touches `plan.md`.
+- **Creation:** gathers facts first (`context.md`, existing specs, `Explore` subagent for codebase questions), then interviews the user in rounds until the frontier is empty — each round numbers its questions and carries a recommended answer. Nothing is written until the user confirms the decision summary. Answers land in `components` / `constraints` / `non_goals` / `technical_notes` / `prerequisites` / `requires`. Writes `spec.yaml` and sets `feature.status: draft`. Hands off to `/spec-plan`.
+- **Update:** reopens only the branches the change touches, edits `spec.yaml` requirements, refreshes `feature.updated`, and resets `feature.status: draft` so the plan can be regenerated. Never touches `plan.md`.
 - Reads `hooks.spec.pre` before entry and `hooks.spec.post` after completion.
 
 ### `/spec-plan`

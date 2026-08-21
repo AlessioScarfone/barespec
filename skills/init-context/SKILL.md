@@ -61,17 +61,21 @@ Tests: <yes — runner / no>
 
 Ask: _"Does this look correct? Anything to add or fix?"_
 
-### 1b. Targeted questions
+### 1b. Round-based interview
 
-Ask the following in a **single numbered message** so the user can answer all at once:
+Interview the user in rounds until every gap left by the reconnaissance is closed, following [references/interview.md](./references/interview.md).
+
+Seed the first round with the topics the reconnaissance could not settle:
 
 1. **What does this project do?** — One or two sentences describing the product/tool and who it's for.
-2. **Key features** — List the main capabilities or modules.
+2. **Key features** — The main capabilities or modules.
 3. **Architecture style** — Monolith, microservices, serverless, CLI, etc.
-4. **Non-functional requirements** — Performance targets, security constraints, compliance needs (if any).
-5. **Current status** — What's already built vs. what's planned?
+4. **Non-functional requirements** — Performance targets, security constraints, compliance needs.
+5. **Current status** — What's already built vs. what's planned.
 
-Skip any question already answered by the reconnaissance.
+Drop any topic already answered by the reconnaissance, and let later rounds follow from what the answers open up.
+
+**Gate — do not write `context.md` while the frontier is non-empty.** Close with a short decision summary and the user's confirmation.
 
 ### 1c. Generate context.md
 
@@ -105,11 +109,11 @@ Use this flow when the context file already exists and the user chose to update 
 - Keep the document **concise** — aim for a single page that an AI agent can quickly consume.
 - Use the structure from the template; do not invent new sections.
 - Write in plain English, no marketing language.
-- If the user provides vague answers, ask one follow-up, then proceed with best effort and note assumptions.
+- Resolve every open point during the interview; the written file contains no unanswered questions.
 
 ## Error handling
 
 - **File not writable / path missing**: Create parent directories as needed before writing `context.md`.
-- **User provides no answers**: Proceed with information gathered from reconnaissance and mark unknown fields as `<!-- unknown — update manually -->`.
-- **Codebase reconnaissance finds nothing**: Skip the summary step and go directly to targeted questions.
-- **Conflicting information**: Surface the conflict to the user and ask for clarification before writing.
+- **User provides no answers**: Adopt your recommended answer for every remaining question, list the answers you adopted, and write a complete file. Do not leave `<!-- unknown -->` markers behind.
+- **Codebase reconnaissance finds nothing**: Skip the summary step and start the interview at round 1.
+- **Conflicting information**: Surface the conflict to the user and re-ask that single question before writing.
