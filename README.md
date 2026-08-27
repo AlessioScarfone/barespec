@@ -203,7 +203,11 @@ flowchart TD
 3. **Plan the work** — Run `/spec-plan <spec-name>` to generate `plan.md` with ordered tasks (status `ready`).
 4. **Implement** — Run `/spec-implement <spec-name>` to execute the tasks in `plan.md`.
 5. **Context auto-updated** — On completion, `context.md` is updated and development notes are written into `spec.yaml`.
-6. **Repeat** for the next feature.
+6. An optional **code review** can be run at any time with `/spec-code-review` to check against coding standards and the spec.
+7. **Repeat** for the next feature.
+
+> [!TIP]
+> At each step, there can be optional pre/post hooks defined in `barespec.config.yml` to run additional instructions before or after the main workflow. Check the [`/init-config` for custom workflow hook configuration](#init-config--customize-workflow-with-custom-prepost-hooks).
 
 ## `/init-config` — Customize Workflow with Custom Pre/Post Hooks
 
