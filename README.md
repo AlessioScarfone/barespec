@@ -189,6 +189,7 @@ flowchart TD
     SPEC["📝 /spec-create Define the spec contract"] --> PLAN
     PLAN["📋 /spec-plan Generate the task plan"] --> IMPL
     IMPL["⚙️ /spec-implement Execute plan tasks"] --> DONE
+    DONE -.-> CODE_REVIEW["Optional: 🔍 /spec-code-review Review implemented spec"]
 
     DONE -->|"🔄 auto-update context"| END(((END))) -.->|repeat| SPEC
 
@@ -196,6 +197,7 @@ flowchart TD
     style SPEC fill:#7B68EE,color:#fff
     style PLAN fill:#9B59B6,color:#fff
     style IMPL fill:#50C878,color:#fff
+    style CODE_REVIEW fill:#50C878,color:#fff
     style DONE fill:#F5A623,color:#fff
 ```
 
