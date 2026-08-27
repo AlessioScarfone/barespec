@@ -226,15 +226,16 @@ Scaffolds or updates `./barespec/barespec.config.yml` — the YAML file that def
 | `spec` | `hooks.spec.pre` | `hooks.spec.post` |
 | `plan` | `hooks.plan.pre` | `hooks.plan.post` |
 | `implement` | `hooks.implement.pre` | `hooks.implement.post` |
+| `review` | `hooks.review.pre` | `hooks.review.post` |
 
 **When to use:**
 - First time setting up hooks on a project
 - Adding or editing existing hook instructions
 - Resetting the config to the default template
 
-The config file is **optional** — if it doesn't exist, all four skills run without hooks.
+The config file is **optional** — if it doesn't exist, all five skills run without hooks.
 
-> **Tip:** Run `/init-config` at any time to create or update `barespec.config.yml`. The skill walks you through all eight hook events one by one, shows the current value for each (if the file already exists), and rewrites the file with your updated instructions. You can re-run it whenever you want to add, change, or remove hooks.
+> **Tip:** Run `/init-config` at any time to create or update `barespec.config.yml`.
 
 **Example `barespec.config.yml`:**
 ```yaml

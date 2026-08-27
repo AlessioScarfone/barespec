@@ -25,6 +25,12 @@ Both axes run as **parallel sub-agents** so they don't pollute each other's cont
 
 ---
 
+## Hook execution
+
+Check `./barespec/barespec.config.yml` for `hooks.review.pre` and `hooks.review.post` entries. Run pre-hooks before the Entry point; run post-hooks after the full workflow completes. See [references/hooks.md](./references/hooks.md) for the full execution rules.
+
+---
+
 ## Entry point
 
 ### 1. Pin the fixed point

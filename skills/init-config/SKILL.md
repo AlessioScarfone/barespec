@@ -1,12 +1,12 @@
 ---
 name: init-config
-description: 'Scaffold or update the barespec configuration file (barespec.config.yml) that defines pre and post hooks for the context, spec, plan, and implement steps. Use when setting up hook customization, configuring hooks, adding new hooks, reviewing or editing hook settings, or when asked to "setup barespec", "configure hooks", "edit the config yml", or "add a pre-hook". Do not use for implementing features, writing specs, or creating project context.'
+description: 'Scaffold or update the barespec configuration file (barespec.config.yml) that defines pre and post hooks for the context, spec, plan, implement, and review steps. Use when setting up hook customization, configuring hooks, adding new hooks, reviewing or editing hook settings, or when asked to "setup barespec", "configure hooks", "edit the config yml", or "add a pre-hook". Do not use for implementing features, writing specs, or creating project context.'
 disable-model-invocation: true
 ---
 
 Scaffold or update the barespec configuration file at `./barespec/barespec.config.yml`.
 
-This file is read by `init-context`, `spec-create`, `spec-plan`, and `spec-implement` to inject custom pre/post instructions into their workflows.
+This file is read by `init-context`, `spec-create`, `spec-plan`, `spec-implement`, and `spec-code-review` to inject custom pre/post instructions into their workflows.
 
 ---
 
@@ -24,6 +24,8 @@ This file is read by `init-context`, `spec-create`, `spec-plan`, and `spec-imple
      - plan.post:     N hook(s)
      - implement.pre: N hook(s)
      - implement.post: N hook(s)
+      - review.pre:    N hook(s)
+      - review.post:   N hook(s)
      ```
      Then ask:
      > "Do you want to **update the hooks** (I'll walk you through each event) or **reset to the default template** (all current hooks will be replaced)?"
@@ -35,7 +37,7 @@ This file is read by `init-context`, `spec-create`, `spec-plan`, and `spec-imple
 
 ## Hook interview
 
-Use the script in [references/hook-interview.md](./references/hook-interview.md) to collect hook instructions. Ask all eight questions in a single numbered message, pre-filling current values where a config already exists. Follow the answer-interpretation rules in the same file.
+Use the script in [references/hook-interview.md](./references/hook-interview.md) to collect hook instructions. Ask all ten questions in a single numbered message, pre-filling current values where a config already exists. Follow the answer-interpretation rules in the same file.
 
 ---
 

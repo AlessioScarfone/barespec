@@ -1,6 +1,6 @@
 # Hook Interview Script
 
-Use this script to collect hook instructions from the user. Ask all eight questions **in a single numbered message** so the user can answer all at once. Pre-fill current values where a config already exists.
+Use this script to collect hook instructions from the user. Ask all ten questions **in a single numbered message** so the user can answer all at once. Pre-fill current values where a config already exists.
 
 ---
 
@@ -41,6 +41,15 @@ Use this script to collect hook instructions from the user. Ask all eight questi
 > 8. **post-implement** — runs after `spec-implement` completes.
 >    Current: `<current value or "none">`
 >    What should happen after all implementation tasks are done? (e.g. "Run npm run lint && npm test and fix any failures")
+>
+> **review step**
+> 9. **pre-review** — runs before `spec-code-review` starts.
+>    Current: `<current value or "none">`
+>    What should happen before reviewing a diff? (e.g. "Re-read the relevant spec and plan before reviewing")
+>
+> 10. **post-review** — runs after `spec-code-review` completes.
+>     Current: `<current value or "none">`
+>     What should happen after the review report is complete? (e.g. "Summarize the findings and action items in review-summary.md")
 
 ---
 

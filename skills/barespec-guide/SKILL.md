@@ -176,7 +176,7 @@ A requirement is referenced by its **ACID**: `<feature-name>.<GROUP_KEY>.<ID>` (
 ### `/init-config`
 
 - If `./barespec/barespec.config.yml` exists → shows configured hooks, asks: update or reset?
-- Runs the hook interview: all eight events in one message, pre-filled with current values.
+- Runs the hook interview: all ten events in one message, pre-filled with current values.
 - Writes (or overwrites) the config; shows the final file content. Never writes empty hook lists.
 
 ### `/spec-code-review`
@@ -201,6 +201,7 @@ Hooks inject plain-text instructions before or after any skill's workflow. No sh
 | spec | `hooks.spec.pre` | `hooks.spec.post` |
 | plan | `hooks.plan.pre` | `hooks.plan.post` |
 | implement | `hooks.implement.pre` | `hooks.implement.post` |
+| review | `hooks.review.pre` | `hooks.review.post` |
 
 **Execution:** pre-hooks run before the skill's entry point; post-hooks run after the full workflow. Each instruction is announced: `"⚙️ Pre-hook: <instruction>"`. If a hook is ambiguous or cannot be executed, skip it without blocking the main workflow.
 
