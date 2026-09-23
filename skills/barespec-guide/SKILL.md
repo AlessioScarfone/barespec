@@ -4,7 +4,7 @@ description: >-
   Autonomous knowledge base for the mini-SDD framework. Always read this skill
   when working on a mini-SDD project or when any message mentions mini-SDD,
   init-context, spec-create, spec-plan, spec-implement,
-  spec-code-review, init-config, context.md, spec.yaml, plan.md, hooks config, or
+  spec-code-review, spec-visualize, init-config, context.md, spec.yaml, plan.md, visual.html, hooks config, or
   spec-driven development. Do not use for
   creating context files, writing specs, planning, implementing features, or
   reviewing code — those have their own skills.
@@ -30,6 +30,7 @@ context → spec → plan → implement → repeat
 | Implementation Plan | `/spec-plan` | Turn a spec into an ordered, testable task plan (`plan.md`) |
 | Implement | `/spec-implement` | Execute the task plan for a spec |
 | Code Review | `/spec-code-review` | Two-axis, read-only review of a diff against Coding Standards and the Spec |
+| Visualize | `/spec-visualize` | Render a spec and its plan as an interactive, offline HTML page for human review |
 | Hook Config | `/init-config` | Configure custom pre/post hooks for any workflow step |
 
 The **barespec** agent orchestrates these skills — it reads project state and routes the user to the correct next action.
@@ -62,6 +63,8 @@ The **barespec** agent orchestrates these skills — it reads project state and 
 
 **Optional — Code Review:** `/spec-code-review [fixed-point] [spec-name-or-description]` can run at any point after step 2 — it never advances the workflow itself, only reports findings for the user to act on via the other skills.
 
+**Optional — Visualize:** `/spec-visualize [spec-name]` can run at any point after step 2 — it renders `visual.html` for human review and never advances the workflow.
+
 ---
 
 ## File structure
@@ -73,7 +76,8 @@ The **barespec** agent orchestrates these skills — it reads project state and 
 └── specs/                  # Specs folder (default: specs/)
     └── <spec-name>/                    # One folder per feature
         ├── spec.yaml                    # Requirement contract (acai feature.yaml format)
-        └── plan.md                     # Ordered implementation task checklist
+        ├── plan.md                     # Ordered implementation task checklist
+        └── visual.html                 # Optional derived review page — written by spec-visualize
 ```
 
 **`spec.yaml` structure** (the file begins with `feature` and may contain `components` and `constraints`):
@@ -176,7 +180,7 @@ A requirement is referenced by its **ACID**: `<feature-name>.<GROUP_KEY>.<ID>` (
 ### `/init-config`
 
 - If `./barespec/barespec.config.yml` exists → shows configured hooks, asks: update or reset?
-- Runs the hook interview: all ten events in one message, pre-filled with current values.
+- Runs the hook interview: all twelve events in one message, pre-filled with current values.
 - Writes (or overwrites) the config; shows the final file content. Never writes empty hook lists.
 
 ### `/spec-code-review`
@@ -186,6 +190,17 @@ A requirement is referenced by its **ACID**: `<feature-name>.<GROUP_KEY>.<ID>` (
 - Resolves the spec to review against, in order: argument → branch/commit-message match → recently-updated `in-progress`/`done` spec → ask the user → a user-supplied one-line intent description → skip the Spec axis.
 - Runs two parallel sub-agents — Coding Standards (`context.md`, repo standards docs, Fowler smell baseline) and Spec (`spec.yaml` requirements + `plan.md` tasks) — and reports both without merging or reranking findings.
 - Ends with a hand-off to `/spec-implement`, `/spec-create`, or `/spec-plan` — it never applies the fixes itself.
+
+### `/spec-visualize`
+
+- Read-only on the spec: never edits `spec.yaml`, `plan.md`, `context.md`, or `feature.status`.
+- If no spec name given, lists all specs and asks the user to choose (uses the only one when there is just one).
+- Extracts facts from `spec.yaml` and `plan.md` into a JSON data object; the page's JavaScript derives coverage, the requirement ↔ task matrix, progress, and a warnings panel (unknown ACIDs, tasks without ACIDs, orphan sub-requirements).
+- Copies a self-contained HTML template to `./barespec/specs/<spec-name>/visual.html` (overwritten on every run) and fills in only the data. No external dependencies; works offline; follows the system light/dark theme.
+- Views: header with version, dates, and a generation stamp; requirement tree; traceability matrix; plan with progress; an inferred flow diagram whose steps cite their ACIDs; touched files; non-goals and open questions; notes. Clicking an ACID highlights it across every view; an "Only selected" filter hides everything unrelated to it.
+- A spec without `plan.md` still renders, with a "No plan yet" banner.
+- Never touches `.gitignore` — versioning `visual.html` is the user's choice.
+- Reads `hooks.visualize.pre` before entry and `hooks.visualize.post` after completion.
 
 ---
 
@@ -202,6 +217,7 @@ Hooks inject plain-text instructions before or after any skill's workflow. No sh
 | plan | `hooks.plan.pre` | `hooks.plan.post` |
 | implement | `hooks.implement.pre` | `hooks.implement.post` |
 | review | `hooks.review.pre` | `hooks.review.post` |
+| visualize | `hooks.visualize.pre` | `hooks.visualize.post` |
 
 **Execution:** pre-hooks run before the skill's entry point; post-hooks run after the full workflow. Each instruction is announced: `"⚙️ Pre-hook: <instruction>"`. If a hook is ambiguous or cannot be executed, skip it without blocking the main workflow.
 
@@ -248,6 +264,7 @@ When determining the current state of a mini-SDD project or deciding what to do 
 | All specs `done`, nothing in-progress | `/spec-create <next-feature>` |
 | Hooks not configured and user wants customisation | `/init-config` |
 | User wants to check a diff/branch/PR against standards or spec | `/spec-code-review [fixed-point] [spec-name]` |
+| User wants a readable overview of a spec or plan | `/spec-visualize <spec-name>` |
 
 **State summary format** (use when reporting state to the user):
 

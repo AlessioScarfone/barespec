@@ -3,7 +3,7 @@
 #
 # MINI-SDD-HOOKS
 # -----
-# Each step (context, spec, plan, implement, review) supports optional pre and post hooks.
+# Each step (context, spec, plan, implement, review, visualize) supports optional pre and post hooks.
 # A hook is a plain-text instruction that the AI model will follow as an explicit
 # step before (pre) or after (post) the skill's main logic.
 #
@@ -53,3 +53,8 @@
 #       - "Re-read plan.md and spec.yaml to ensure the review is based on the latest information."
 #     post:
 #       - "After completing the review, summarize the findings and any action items and write on a file named review-summary.md in the spec folder. If no spec is provided, write the summary in the root of the project."
+
+#   visualize:
+#     post:
+#       # Example: open the generated page for review
+#       - "Open the generated visual.html in the default browser."

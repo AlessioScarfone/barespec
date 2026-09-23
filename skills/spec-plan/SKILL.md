@@ -52,6 +52,7 @@ Check `./barespec/barespec.config.yml` for `hooks.plan.pre` and `hooks.plan.post
    > 1. \<task 1\>
    > 2. \<task 2\>
    > "Let me know if you'd like any adjustments. Next: run `/spec-implement <spec-name>` to execute the plan."
+   > "Run `/spec-visualize <spec-name>` to review the spec and plan visually."
 
 ---
 
@@ -68,6 +69,7 @@ Use this when a `plan.md` already exists for the spec.
 5. Advance the spec: in the `feature` block set `status: ready` and `updated: YYYY-MM-DD`.
 6. Confirm:
    > "✅ Updated `<spec-name>/plan.md` (N tasks) and set `<spec-name>/spec.yaml` to status: ready. Let me know if you'd like any adjustments."
+   > "Run `/spec-visualize <spec-name>` to review the spec and plan visually."
 
 ---
 

@@ -67,7 +67,8 @@ Read the template from `assets/spec.template.yaml` and fill it in using the gath
 
 Confirm to the user and point them to the next step:
 > "✅ Created `<spec-name>/spec.yaml` (status: draft).
-> Next: run `/spec-plan <spec-name>` to generate the implementation plan."
+> Next: run `/spec-plan <spec-name>` to generate the implementation plan.
+> Run `/spec-visualize <spec-name>` to review the spec visually."
 
 ---
 
@@ -87,7 +88,8 @@ Use this when a spec already exists and the user chose to update it.
 8. Show a summary of what changed and which dependencies were inferred.
 9. Confirm and point to the next step:
    > "✅ Updated `<spec-name>/spec.yaml` (status: draft).
-   > The spec changed — run `/spec-plan <spec-name>` to (re)generate the implementation plan."
+   > The spec changed — run `/spec-plan <spec-name>` to (re)generate the implementation plan.
+   > Run `/spec-visualize <spec-name>` to review the spec visually."
 
 ---
 

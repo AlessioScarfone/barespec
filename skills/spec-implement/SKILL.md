@@ -96,6 +96,8 @@ Requirements: N/M satisfied
 Changes made:
 - <file 1>: <what changed>
 - <file 2>: <what changed>
+
+Run /spec-visualize <spec-name> to review the finished spec visually.
 ```
 
 ## After completion

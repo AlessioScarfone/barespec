@@ -14,6 +14,7 @@ A minimal spec-driven development framework for AI coding agents.
     - [`/spec-plan` — Implementation Plan](#spec-plan--implementation-plan)
     - [`/spec-implement` — Implement](#spec-implement--implement)
     - [`/spec-code-review` — Two-Axis Code Review](#spec-code-review--two-axis-code-review)
+    - [`/spec-visualize` — Visual Spec Review](#spec-visualize--visual-spec-review)
   - [Standard Workflow](#standard-workflow)
   - [`/init-config` — Customize Workflow with Custom Pre/Post Hooks](#init-config--customize-workflow-with-custom-prepost-hooks)
   - [`barespec-guide` — Autonomous Framework Knowledge Base](#barespec-guide--autonomous-framework-knowledge-base)
@@ -180,6 +181,34 @@ If the working tree is clean and no fixed point is given, the skill asks for one
 
 ---
 
+### `/spec-visualize` — Visual Spec Review
+
+Renders a spec and its plan as `barespec/specs/<spec-name>/visual.html` — a single, self-contained page you open in a browser. No external dependencies, works offline, follows your system's light/dark theme. **Read-only on the spec — it never edits `spec.yaml`, `plan.md`, or `feature.status`.**
+
+**What the page shows:**
+- Header with status, version, dates, `requires`/`prerequisites`, and a generation stamp (so you can tell when it's out of date)
+- Requirement tree with a coverage badge on every ACID
+- Traceability matrix: which tasks cover each requirement, with uncovered ones flagged
+- The plan: sections, task states, checkpoints, optional tasks, progress per section
+- An inferred flow diagram — marked as inferred, every step citing the ACIDs it's drawn from
+- Files touched, linked to their tasks; non-goals, open questions, and notes
+- A warnings panel for spec/plan inconsistencies (unknown ACIDs, tasks without ACIDs, orphan sub-requirements)
+
+Click any ACID to highlight it across every view; filter to uncovered requirements, open tasks, or only what relates to the selected ACID.
+
+**How it works:** the agent only extracts facts from `spec.yaml` and `plan.md` into a JSON block; the page's own JavaScript computes coverage, progress, and warnings. The layout comes from a fixed template, so every run looks the same.
+
+**When to use:**
+- Reviewing a spec right after `/spec-create`, before planning
+- Reviewing a plan before `/spec-implement`
+- Following progress, or onboarding someone onto a finished spec
+
+A spec without a plan still renders, with a "No plan yet" banner. Every run overwrites `visual.html`; whether you commit it or add it to `.gitignore` is up to you.
+
+**Input:** `/spec-visualize [spec-name]`. If omitted, lists the available specs.
+
+---
+
 ## Standard Workflow
 
 ```mermaid
@@ -190,12 +219,15 @@ flowchart TD
     PLAN["📋 /spec-plan Generate the task plan"] --> IMPL
     IMPL["⚙️ /spec-implement Execute plan tasks"] -->|"🔄 auto-update context"| END(((END))) -.->|repeat| SPEC
     END -.-> |Optional|CODE_REVIEW["🔍 /spec-code-review Review implemented spec"] -.-> END
+    SPEC -.-> |Optional|VISUAL["🖼️ /spec-visualize Review spec and plan visually"]
+    PLAN -.-> |Optional|VISUAL
 
     style CTX fill:#4A90D9,color:#fff
     style SPEC fill:#7B68EE,color:#fff
     style PLAN fill:#9B59B6,color:#fff
     style IMPL fill:#50C878,color:#fff
     style CODE_REVIEW fill:#F5A623,color:#fff
+    style VISUAL fill:#F5A623,color:#fff
 ```
 
 1. **Initialize context** — Run `/init-context` to capture the project's foundation.
@@ -204,7 +236,8 @@ flowchart TD
 4. **Implement** — Run `/spec-implement <spec-name>` to execute the tasks in `plan.md`.
 5. **Context auto-updated** — On completion, `context.md` is updated and development notes are written into `spec.yaml`.
 6. An optional **code review** can be run at any time with `/spec-code-review` to check against coding standards and the spec.
-7. **Repeat** for the next feature.
+7. An optional **visual review** can be run at any time with `/spec-visualize` to read the spec and plan as an interactive page.
+8. **Repeat** for the next feature.
 
 > [!TIP]
 > At each step, there can be optional pre/post hooks defined in `barespec.config.yml` to run additional instructions before or after the main workflow. Check the [`/init-config` for custom workflow hook configuration](#init-config--customize-workflow-with-custom-prepost-hooks).
@@ -227,13 +260,14 @@ Scaffolds or updates `./barespec/barespec.config.yml` — the YAML file that def
 | `plan` | `hooks.plan.pre` | `hooks.plan.post` |
 | `implement` | `hooks.implement.pre` | `hooks.implement.post` |
 | `review` | `hooks.review.pre` | `hooks.review.post` |
+| `visualize` | `hooks.visualize.pre` | `hooks.visualize.post` |
 
 **When to use:**
 - First time setting up hooks on a project
 - Adding or editing existing hook instructions
 - Resetting the config to the default template
 
-The config file is **optional** — if it doesn't exist, all five skills run without hooks.
+The config file is **optional** — if it doesn't exist, all skills run without hooks.
 
 > **Tip:** Run `/init-config` at any time to create or update `barespec.config.yml`.
 
@@ -272,7 +306,7 @@ A background knowledge skill that is **not a slash command**. It is automaticall
 
 **What it provides:**
 - Full framework overview and workflow lifecycle
-- Per-skill behavioral reference (`init-context`, `spec-create`, `spec-plan`, `spec-implement`, `init-config`)
+- Per-skill behavioral reference (`init-context`, `spec-create`, `spec-plan`, `spec-implement`, `spec-code-review`, `spec-visualize`, `init-config`)
 - File structure reference (`barespec/` root folder, `specs/` subfolder)
 - Spec lifecycle, status values, dependency rules, and task format
 - Hook system reference and config format
@@ -293,7 +327,8 @@ your-project/
     └── specs/
         ├── user-authentication/
         │   ├── spec.yaml     # Requirement contract (created by spec-create, never modified during implementation)
-        │   └── plan.md     # Task checklist + dev notes after completion
+        │   ├── plan.md     # Task checklist + dev notes after completion
+        │   └── visual.html     # Optional review page (generated by spec-visualize)
         └── csv-export/
             ├── spec.yaml     # Requirement contract (created by spec-create, never modified during implementation)
             └── plan.md     # Task checklist + dev notes after completion

@@ -1,6 +1,6 @@
 # Hook Interview Script
 
-Use this script to collect hook instructions from the user. Ask all ten questions **in a single numbered message** so the user can answer all at once. Pre-fill current values where a config already exists.
+Use this script to collect hook instructions from the user. Ask all twelve questions **in a single numbered message** so the user can answer all at once. Pre-fill current values where a config already exists.
 
 ---
 
@@ -50,6 +50,15 @@ Use this script to collect hook instructions from the user. Ask all ten question
 > 10. **post-review** — runs after `spec-code-review` completes.
 >     Current: `<current value or "none">`
 >     What should happen after the review report is complete? (e.g. "Summarize the findings and action items in review-summary.md")
+>
+> **visualize step**
+> 11. **pre-visualize** — runs before `spec-visualize` starts.
+>     Current: `<current value or "none">`
+>     What should happen before generating the visual view of a spec? (e.g. "Check that plan.md is up to date with spec.yaml")
+>
+> 12. **post-visualize** — runs after `spec-visualize` completes.
+>     Current: `<current value or "none">`
+>     What should happen after `visual.html` is generated? (e.g. "Open the generated visual.html in the default browser")
 
 ---
 
