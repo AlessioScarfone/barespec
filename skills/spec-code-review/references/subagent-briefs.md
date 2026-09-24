@@ -24,7 +24,7 @@ Include in the prompt:
 
 Brief:
 
-> "Review the diff produced by `<diff command>` against the spec below. Report: (a) requirements that are missing or only partially implemented — cite the ACID `<feature-name>.<GROUP_KEY>.<ID>`; (b) behaviour in the diff that no requirement asked for (scope creep), flagging anything that matches a `non_goals` entry; (c) requirements that look implemented but whose implementation looks wrong; (d) plan tasks marked `- [x]` with no corresponding change in the diff, and unchecked tasks that appear already implemented. Quote the requirement text or task line for each finding. Treat `- [ ]*` tasks as optional. Do not modify any file. Under 400 words."
+> "Review the diff produced by `<diff command>` against the spec below. Report: (a) requirements that are missing or only partially implemented — cite the ACID `<feature-name>.<GROUP_KEY>.<ID>`; (b) behaviour in the diff that no requirement asked for (scope creep), flagging anything that matches a `non_goals` entry; (c) requirements that look implemented but whose implementation looks wrong; (d) plan tasks marked `- [x]` with no corresponding change in the diff, and unchecked tasks that appear already implemented. Quote the requirement text or task line for each finding. Treat `- [ ]*` tasks as optional. Do not modify any file. Under 400 words. Rank by severity: CRITICAL (data loss, security, breaks in production), MAJOR (wrong behaviour a user will hit), MINOR (works, might bite later), NIT (style). List anything you had to assume under "Assumptions", separately from the findings."
 
 ### Description-only variant
 
