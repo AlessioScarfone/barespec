@@ -16,7 +16,6 @@ A minimal spec-driven development framework for AI coding agents.
     - [`/spec-code-review` — Two-Axis Code Review](#spec-code-review--two-axis-code-review)
     - [`/spec-visualize` — Visual Spec Review](#spec-visualize--visual-spec-review)
   - [Standard Workflow](#standard-workflow)
-  - [`/init-config` — Customize Workflow with Custom Pre/Post Hooks](#init-config--customize-workflow-with-custom-prepost-hooks)
   - [`barespec-guide` — Autonomous Framework Knowledge Base](#barespec-guide--autonomous-framework-knowledge-base)
   - [Output File Structure](#output-file-structure)
 
@@ -211,6 +210,9 @@ A spec without a plan still renders, with a "No plan yet" banner. Every run over
 
 ## Standard Workflow
 
+![BareSpec workflow](docs/workflow.png)
+
+<!--
 ```mermaid
 flowchart TD
     START((START)) --> CTX["🗂️ /init-context Create project context"] --> SPEC
@@ -229,6 +231,7 @@ flowchart TD
     style CODE_REVIEW fill:#F5A623,color:#fff
     style VISUAL fill:#F5A623,color:#fff
 ```
+-->
 
 1. **Initialize context** — Run `/init-context` to capture the project's foundation.
 2. **Spec a feature** — Run `/spec-create <feature>` to define the requirement contract (`spec.yaml`, status `draft`).
