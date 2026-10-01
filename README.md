@@ -1,25 +1,48 @@
-# BareSpec
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo/barespec-logo-dark.svg">
+    <img src="assets/logo/barespec-logo.svg" alt="BareSpec logo" width="120" height="120">
+  </picture>
+</p>
 
-A minimal spec-driven development framework for AI coding agents.
+<h1 align="center">BareSpec</h1>
+
+<p align="center">A minimal spec-driven development framework for AI coding agents.</p>
 
 > Compliant with the [Agent Plugins 1.0.0](https://agent-plugins.org/) specification.
 
 ---
 
-- [BareSpec](#barespec)
-  - [Quick Start](#quick-start)
-  - [Skills](#skills)
-    - [`/init-context` — Project Context](#init-context--project-context)
-    - [`/spec-create` — Feature Spec](#spec-create--feature-spec)
-    - [`/spec-plan` — Implementation Plan](#spec-plan--implementation-plan)
-    - [`/spec-implement` — Implement](#spec-implement--implement)
-    - [`/spec-code-review` — Two-Axis Code Review](#spec-code-review--two-axis-code-review)
-    - [`/spec-visualize` — Visual Spec Review](#spec-visualize--visual-spec-review)
-  - [Standard Workflow](#standard-workflow)
-  - [`barespec-guide` — Autonomous Framework Knowledge Base](#barespec-guide--autonomous-framework-knowledge-base)
-  - [Output File Structure](#output-file-structure)
+- [How It Works](#how-it-works)
+- [Quick Start](#quick-start)
+- [Skills](#skills)
+  - [`/init-context` — Project Context](#init-context--project-context)
+  - [`/spec-create` — Feature Spec](#spec-create--feature-spec)
+  - [`/spec-plan` — Implementation Plan](#spec-plan--implementation-plan)
+  - [`/spec-implement` — Implement](#spec-implement--implement)
+  - [`/spec-code-review` — Two-Axis Code Review](#spec-code-review--two-axis-code-review)
+  - [`/spec-visualize` — Visual Spec Review](#spec-visualize--visual-spec-review)
+- [`/init-config` — Customize Workflow with Custom Pre/Post Hooks](#init-config--customize-workflow-with-custom-prepost-hooks)
+- [`barespec-guide` — Autonomous Framework Knowledge Base](#barespec-guide--autonomous-framework-knowledge-base)
+- [Output File Structure](#output-file-structure)
 
 ---
+
+## How It Works
+
+![BareSpec workflow](docs/workflow.svg)
+
+1. **Initialize context** — Run `/init-context` to capture the project's foundation.
+2. **Spec a feature** — Run `/spec-create <feature>` to define the requirement contract (`spec.yaml`, status `draft`).
+3. **Plan the work** — Run `/spec-plan <spec-name>` to generate `plan.md` with ordered tasks (status `ready`).
+4. **Implement** — Run `/spec-implement <spec-name>` to execute the tasks in `plan.md`.
+5. **Context auto-updated** — On completion, `context.md` is updated and development notes are written into `spec.yaml`.
+6. An optional **code review** can be run at any time with `/spec-code-review` to check against coding standards and the spec.
+7. An optional **visual review** can be run at any time with `/spec-visualize` to read the spec and plan as an interactive page.
+8. **Repeat** for the next feature.
+
+> [!TIP]
+> At each step, there can be optional pre/post hooks defined in `barespec.config.yml` to run additional instructions before or after the main workflow. Check the [`/init-config` for custom workflow hook configuration](#init-config--customize-workflow-with-custom-prepost-hooks).
 
 ## Quick Start
 
@@ -208,43 +231,6 @@ A spec without a plan still renders, with a "No plan yet" banner. Every run over
 
 ---
 
-## Standard Workflow
-
-![BareSpec workflow](docs/workflow.png)
-
-<!--
-```mermaid
-flowchart TD
-    START((START)) --> CTX["🗂️ /init-context Create project context"] --> SPEC
-
-    SPEC["📝 /spec-create Define the spec contract"] --> PLAN
-    PLAN["📋 /spec-plan Generate the task plan"] --> IMPL
-    IMPL["⚙️ /spec-implement Execute plan tasks"] -->|"🔄 auto-update context"| END(((END))) -.->|repeat| SPEC
-    END -.-> |Optional|CODE_REVIEW["🔍 /spec-code-review Review implemented spec"] -.-> END
-    SPEC -.-> |Optional|VISUAL["🖼️ /spec-visualize Review spec and plan visually"]
-    PLAN -.-> |Optional|VISUAL
-
-    style CTX fill:#4A90D9,color:#fff
-    style SPEC fill:#7B68EE,color:#fff
-    style PLAN fill:#9B59B6,color:#fff
-    style IMPL fill:#50C878,color:#fff
-    style CODE_REVIEW fill:#F5A623,color:#fff
-    style VISUAL fill:#F5A623,color:#fff
-```
--->
-
-1. **Initialize context** — Run `/init-context` to capture the project's foundation.
-2. **Spec a feature** — Run `/spec-create <feature>` to define the requirement contract (`spec.yaml`, status `draft`).
-3. **Plan the work** — Run `/spec-plan <spec-name>` to generate `plan.md` with ordered tasks (status `ready`).
-4. **Implement** — Run `/spec-implement <spec-name>` to execute the tasks in `plan.md`.
-5. **Context auto-updated** — On completion, `context.md` is updated and development notes are written into `spec.yaml`.
-6. An optional **code review** can be run at any time with `/spec-code-review` to check against coding standards and the spec.
-7. An optional **visual review** can be run at any time with `/spec-visualize` to read the spec and plan as an interactive page.
-8. **Repeat** for the next feature.
-
-> [!TIP]
-> At each step, there can be optional pre/post hooks defined in `barespec.config.yml` to run additional instructions before or after the main workflow. Check the [`/init-config` for custom workflow hook configuration](#init-config--customize-workflow-with-custom-prepost-hooks).
-
 ## `/init-config` — Customize Workflow with Custom Pre/Post Hooks
 
 Scaffolds or updates `./barespec/barespec.config.yml` — the YAML file that defines custom pre/post hook instructions for each BareSpec step.
@@ -288,16 +274,7 @@ hooks:
       - "Extract key lessons learned from the implementation work and update context.md to reflect any new insights about the architecture, patterns, or constraints discovered during implementation."
 ```
 
-```mermaid
-flowchart LR
-   START((START)) --> PRE_HOOKS["Pre-hooks (optional)"] --> MAIN_WORKFLOW("Main workflow")
-   MAIN_WORKFLOW --> POST_HOOKS["Post-hooks (optional)"] --> END(((END)))
-
-   style PRE_HOOKS fill:#4A90D9,color:#fff,stroke-dasharray: 5 5,stroke-width: 2px
-   style MAIN_WORKFLOW fill:#7B68EE,color:#fff
-   style POST_HOOKS fill:#50C878,color:#fff,stroke-dasharray: 5 5,stroke-width: 2px
-   
-```
+![BareSpec hooks](docs/hooks.svg)
 
 ---
 
