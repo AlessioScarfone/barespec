@@ -5,11 +5,15 @@
   </picture>
 </p>
 
-<h1 align="center">BareSpec</h1>
+<h1 align="center">
+  <a href="https://alessioscarfone.github.io/barespec/">BareSpec</a>
+</h1>
 
 <p align="center">A minimal spec-driven development framework for AI coding agents.</p>
 
 > Compliant with the [Agent Plugins 1.0.0](https://agent-plugins.org/) specification.
+
+
 
 ---
 
