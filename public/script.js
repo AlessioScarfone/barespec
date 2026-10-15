@@ -189,20 +189,38 @@
       .filter(Boolean)
       .sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
     const stages = [...document.querySelectorAll("[data-stage]")];
+    let pinned = null;
 
     const update = () => {
       const probe = window.innerHeight * 0.3;
-      let current = null;
-      targets.forEach((target) => {
+      const matches = targets.filter((target) => {
         const box = target.getBoundingClientRect();
-        if (box.top <= probe && box.bottom > probe) current = target;
+        return box.top <= probe && box.bottom > probe;
       });
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      let current = matches[matches.length - 1] || null;
+      if (pinned && (matches.includes(pinned) || atBottom)) current = pinned;
+      else if (atBottom) current = targets[targets.length - 1];
       links.forEach((link) => {
         if (current && link.getAttribute("href") === `#${current.id}`) link.setAttribute("aria-current", "true");
         else link.removeAttribute("aria-current");
       });
       stages.forEach((stage) => stage.classList.toggle("is-current", stage === current));
     };
+
+    // A clicked link wins over siblings that share the probe line until the user scrolls.
+    links.forEach((link) => {
+      link.addEventListener("click", () => {
+        pinned = document.getElementById(link.getAttribute("href").slice(1));
+        update();
+      });
+    });
+    const unpin = () => { pinned = null; };
+    window.addEventListener("wheel", unpin, { passive: true });
+    window.addEventListener("touchmove", unpin, { passive: true });
+    window.addEventListener("keydown", (event) => {
+      if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(event.key)) unpin();
+    });
 
     const observer = new IntersectionObserver(update, { rootMargin: "-30% 0px -69% 0px" });
     targets.forEach((target) => observer.observe(target));

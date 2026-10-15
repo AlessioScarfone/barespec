@@ -74,8 +74,9 @@
           <li><a class="rail__link rail__link--cmd" href="#stage-spec">/spec-create</a></li>
           <li><a class="rail__link rail__link--cmd" href="#stage-plan">/spec-plan</a></li>
           <li><a class="rail__link rail__link--cmd" href="#stage-implement">/spec-implement</a></li>
-          <li><a class="rail__link rail__link--cmd" href="#optional">/spec-code-review</a></li>
-          <li><a class="rail__link rail__link--cmd" href="#optional">/spec-visualize</a></li>
+          <li><a class="rail__link rail__link--cmd" href="#opt-review">/spec-code-review</a></li>
+          <li><a class="rail__link rail__link--cmd" href="#opt-visualize">/spec-visualize</a></li>
+          <li><a class="rail__link rail__link--cmd" href="#init-config">/init-config</a></li>
         </ul>
       </div>
       <p class="rail__empty" id="rail-empty" hidden>No match. Try “install” or “hooks”.</p>
@@ -310,7 +311,7 @@ for the warehouse team.
         <div class="optional" id="optional">
           <h3 class="optional__title">Read-only, whenever you want</h3>
           <div class="optional__grid">
-            <div class="opt">
+            <div class="opt" id="opt-review">
               <p class="stage__cmd"><code>/spec-code-review [fixed-point] [spec-name]</code></p>
               <p>Reviews your diff along two independent axes, coding standards and spec, each run by its own sub-agent. It reports findings and never edits code or changes a spec’s status. With no arguments it reviews your uncommitted changes.</p>
               <figure class="code">
@@ -318,7 +319,7 @@ for the warehouse team.
 <pre class="code__pre"><code><span class="k">/spec-code-review</span> main user-auth</code></pre>
               </figure>
             </div>
-            <div class="opt">
+            <div class="opt" id="opt-visualize">
               <p class="stage__cmd"><code>/spec-visualize [spec-name]</code></p>
               <p>Renders a spec and its plan as <code>visual.html</code>: a requirement tree, a traceability matrix, task states and warnings for inconsistencies. A single self-contained page that works offline.</p>
             </div>
@@ -360,7 +361,7 @@ for the warehouse team.
       <section class="section wrap" id="hooks" aria-labelledby="hooks-title">
         <h2 class="sticky-head" id="hooks-title">Add your own steps.</h2>
         <p class="lede">Hooks are plain-text instructions the agent follows before or after a skill. There are no scripts to maintain.</p>
-        <div class="hooks">
+        <div class="hooks" id="init-config">
           <div class="hooks__text">
             <p>Run <code>/init-config</code> to create or update <code>barespec/barespec.config.yml</code>. Each of the six steps takes a <code>pre</code> and a <code>post</code> list: <code>context</code>, <code>spec</code>, <code>plan</code>, <code>implement</code>, <code>review</code> and <code>visualize</code>.</p>
             <ol class="hookflow" aria-label="Hook order">

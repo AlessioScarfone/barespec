@@ -150,7 +150,7 @@ If a spec already exists, the skill asks whether to update it or create a new sp
 Reads an existing `spec.yaml` and breaks it into an ordered, testable task checklist written to `plan.md` inside the same `barespec/specs/<spec-name>/` folder. It is the bridge between the spec (what to build) and `/spec-implement` (which executes the tasks).
 
 **What it produces:**
-- `plan.md` — filled from `plan.template.md`; approach, trade-offs, ordered task checklist with ACID tags and **Done when:** checks
+- `plan.md` — filled from `plan.template.md`; approach, acceptance criteria, verification steps, and an ordered task checklist with ACID tags and checkpoints
 
 **What it does:**
 1. Reads `context.md` and the selected `spec.yaml`
