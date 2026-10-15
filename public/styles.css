@@ -381,19 +381,30 @@ kbd {
   .flow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .flow__step:nth-child(2)::after { content: "→"; content: "→" / ""; }
 }
-.flow__notes {
+.intro { display: grid; gap: var(--space-md); max-width: 60ch; margin-bottom: var(--space-xl); }
+.diagram {
+  display: grid;
+  gap: var(--space-lg);
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-lg);
+  border: var(--rule-hair) dashed var(--color-rule-2);
+  border-radius: var(--radius-md);
+}
+.diagram__zone { color: var(--color-muted); font: 400 var(--text-xs)/1.6 var(--font-mono); }
+.diagram__zone code { padding: 0; border: 0; background: none; color: inherit; font-size: inherit; }
+.diagram__list { display: grid; padding: 0; list-style: none; }
+.diagram__list li {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 0 var(--space-xl);
-  margin-top: var(--space-xl);
-  padding: 0;
-  list-style: none;
+  gap: var(--space-3xs);
+  padding-block: var(--space-sm);
+  border-top: var(--rule-hair) dashed var(--color-rule-2);
+  font-size: var(--text-sm);
 }
-.flow__notes li { padding-block: var(--space-sm); border-top: var(--rule-hair) solid var(--color-rule-2); }
-.flow__notes li:last-child { border-bottom: var(--rule-hair) solid var(--color-rule-2); }
-@media (min-width: 72rem) {
-  .flow__notes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .flow__notes li:last-child { border-bottom: 0; }
+.diagram__tag { color: var(--color-muted); font: 500 var(--text-xs)/1.6 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+@media (min-width: 40rem) {
+  .diagram__list li { grid-template-columns: 6rem minmax(0, 1fr); gap: var(--space-sm); align-items: baseline; }
 }
 
 /* install tabs */
@@ -539,20 +550,6 @@ kbd {
 }
 @media (min-width: 72rem) {
   .stage { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-2xl); align-items: start; }
-}
-
-.optional {
-  display: grid;
-  gap: var(--space-lg);
-  margin-top: var(--space-md);
-  padding-top: var(--space-lg);
-  border-top: var(--rule-hair) solid var(--color-ink);
-}
-.optional__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
-.opt { display: grid; gap: var(--space-md); align-content: start; min-width: 0; }
-.opt p:not(.stage__cmd) { max-width: 60ch; }
-@media (min-width: 72rem) {
-  .optional__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-2xl); }
 }
 
 /* status lifecycle */

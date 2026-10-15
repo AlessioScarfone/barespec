@@ -59,12 +59,12 @@
       <div class="rail__sec">
         <p class="rail__group">Sections</p>
         <ul class="rail__list">
-          <li><a class="rail__link" href="#how">How it works</a></li>
           <li><a class="rail__link" href="#install">Install</a></li>
           <li><a class="rail__link" href="#usage">Usage</a></li>
           <li><a class="rail__link" href="#lifecycle">Status lifecycle</a></li>
           <li><a class="rail__link" href="#hooks">Hooks</a></li>
           <li><a class="rail__link" href="#files">Files in your repo</a></li>
+          <li><a class="rail__link" href="#commands">Command reference</a></li>
         </ul>
       </div>
       <div class="rail__sec">
@@ -76,7 +76,7 @@
           <li><a class="rail__link rail__link--cmd" href="#stage-implement">/spec-implement</a></li>
           <li><a class="rail__link rail__link--cmd" href="#opt-review">/spec-code-review</a></li>
           <li><a class="rail__link rail__link--cmd" href="#opt-visualize">/spec-visualize</a></li>
-          <li><a class="rail__link rail__link--cmd" href="#init-config">/init-config</a></li>
+          <li><a class="rail__link rail__link--cmd" href="#stage-config">/init-config</a></li>
         </ul>
       </div>
       <p class="rail__empty" id="rail-empty" hidden>No match. Try “install” or “hooks”.</p>
@@ -98,7 +98,7 @@
           <p class="lede">A minimal spec-driven development framework for AI coding agents. Write a short spec, plan the tasks, and let the agent implement them.</p>
           <div class="hero__cta">
             <a class="btn btn--primary" href="#install">Install BareSpec</a>
-            <a class="link" href="#how">How it works</a>
+            <a class="link" href="#usage">How it works</a>
           </div>
           <p class="hero__meta">Plugin for VS Code, Copilot CLI and Claude Code. Compliant with <a class="link" href="https://agent-plugins.org/">Agent Plugins 1.0.0</a>. MIT licence.</p>
         </div>
@@ -120,41 +120,6 @@
             </div>
           </figure>
         </div>
-      </section>
-
-      <!-- How it works -->
-      <section class="section wrap" id="how" aria-labelledby="how-title">
-        <h2 class="sticky-head" id="how-title">Four steps, one loop.</h2>
-        <p class="lede">BareSpec splits a feature into a contract and a checklist. The spec says what to build, the plan says in what order, and the agent builds it and records what changed.</p>
-
-        <ol class="flow" aria-label="BareSpec workflow">
-          <li class="flow__step">
-            <span class="flow__n">01</span>
-            <a class="flow__cmd" href="#stage-context">/init-context</a>
-            <span class="flow__out">context.md</span>
-          </li>
-          <li class="flow__step">
-            <span class="flow__n">02</span>
-            <a class="flow__cmd" href="#stage-spec">/spec-create</a>
-            <span class="flow__out">spec.yaml · draft</span>
-          </li>
-          <li class="flow__step">
-            <span class="flow__n">03</span>
-            <a class="flow__cmd" href="#stage-plan">/spec-plan</a>
-            <span class="flow__out">plan.md · ready</span>
-          </li>
-          <li class="flow__step">
-            <span class="flow__n">04</span>
-            <a class="flow__cmd" href="#stage-implement">/spec-implement</a>
-            <span class="flow__out">in-progress → done</span>
-          </li>
-        </ol>
-
-        <ul class="flow__notes">
-          <li><strong>When a spec is done,</strong> <code>context.md</code> is updated and the next feature starts again at step 02.</li>
-          <li><strong>Read-only, any time:</strong> <a class="link" href="#optional"><code>/spec-code-review</code></a> checks a diff against standards and spec; <a class="link" href="#optional"><code>/spec-visualize</code></a> renders the spec and plan as a page.</li>
-          <li><strong>Every step can be wrapped</strong> with your own <a class="link" href="#hooks">pre and post hooks</a>.</li>
-        </ul>
       </section>
 
       <!-- Install -->
@@ -217,9 +182,144 @@ copilot plugin install barespec@alessioscarfone</code></pre>
         <p class="note">Installed? Open your agent’s chat in a project and run <code>/init-context</code>. <a class="link" href="#usage">What happens next</a></p>
       </section>
 
-      <!-- Usage -->
+      <!-- Usage: what BareSpec is and how it works -->
       <section class="section wrap" id="usage" aria-labelledby="usage-title">
-        <h2 class="sticky-head" id="usage-title">Use it, one command at a time.</h2>
+        <h2 class="sticky-head" id="usage-title">Usage: four steps, one loop.</h2>
+        <p class="lede">BareSpec splits a feature into a contract and a checklist. A feature moves through four slash commands, and each one writes a file the next one reads.</p>
+
+        <div class="intro">
+          <p><code>context.md</code> holds the project background every skill reads. <code>spec.yaml</code> is the requirement contract for one feature, and <code>plan.md</code> is its ordered task checklist. The agent implements the plan task by task and records what changed.</p>
+          <p>Every step reads and writes plain files in your repo, so you can stop after any command and pick up later.</p>
+        </div>
+
+        <figure class="diagram" aria-label="BareSpec workflow">
+          <p class="diagram__zone">Pre and post hooks can run around every step. Set them up with <a class="link" href="#stage-config"><code>/init-config</code></a>.</p>
+
+          <ol class="flow">
+            <li class="flow__step">
+              <span class="flow__n">01</span>
+              <a class="flow__cmd" href="#stage-context">/init-context</a>
+              <span class="flow__out">context.md</span>
+            </li>
+            <li class="flow__step">
+              <span class="flow__n">02</span>
+              <a class="flow__cmd" href="#stage-spec">/spec-create</a>
+              <span class="flow__out">spec.yaml · draft</span>
+            </li>
+            <li class="flow__step">
+              <span class="flow__n">03</span>
+              <a class="flow__cmd" href="#stage-plan">/spec-plan</a>
+              <span class="flow__out">plan.md · ready</span>
+            </li>
+            <li class="flow__step">
+              <span class="flow__n">04</span>
+              <a class="flow__cmd" href="#stage-implement">/spec-implement</a>
+              <span class="flow__out">in-progress → done</span>
+            </li>
+          </ol>
+
+          <ul class="diagram__list">
+            <li><span class="diagram__tag">Feedback</span><span>When a spec is done, <code>/spec-implement</code> updates <code>context.md</code> (back to 01).</span></li>
+            <li><span class="diagram__tag">Optional</span><span><a class="link" href="#opt-visualize"><code>/spec-visualize</code></a> after 02 or 03 renders the spec and plan as <code>visual.html</code>. Read-only.</span></li>
+            <li><span class="diagram__tag">Optional</span><span><a class="link" href="#opt-review"><code>/spec-code-review</code></a> after 04 reports on the diff. Read-only.</span></li>
+          </ul>
+        </figure>
+
+        <p class="note">Every command is described in the <a class="link" href="#commands">command reference</a>.</p>
+      </section>
+
+      <!-- Lifecycle -->
+      <section class="section wrap" id="lifecycle" aria-labelledby="life-title">
+        <h2 class="sticky-head" id="life-title">Status follows the work.</h2>
+        <p class="lede">The <code>status</code> field in <code>spec.yaml</code> tells you, and the next skill, where a feature stands.</p>
+        <ol class="life">
+          <li class="life__item">
+            <span class="chip">draft</span>
+            <p class="life__by">set by <code>/spec-create</code></p>
+            <p>Spec contract written, no plan yet.</p>
+          </li>
+          <li class="life__item">
+            <span class="chip">ready</span>
+            <p class="life__by">set by <code>/spec-plan</code></p>
+            <p>Plan generated, ready to implement.</p>
+          </li>
+          <li class="life__item">
+            <span class="chip">in-progress</span>
+            <p class="life__by">set by <code>/spec-implement</code></p>
+            <p>Implementation started.</p>
+          </li>
+          <li class="life__item">
+            <span class="chip">done</span>
+            <p class="life__by">set by <code>/spec-implement</code></p>
+            <p>Implementation completed.</p>
+          </li>
+        </ol>
+        <p class="note">A spec whose <code>requires</code> list names specs that are not <code>done</code> cannot be implemented yet. When a spec finishes, BareSpec reports which dependent specs are now unblocked.</p>
+      </section>
+
+      <!-- Hooks -->
+      <section class="section wrap" id="hooks" aria-labelledby="hooks-title">
+        <h2 class="sticky-head" id="hooks-title">Add your own steps.</h2>
+        <p class="lede">Hooks are plain-text instructions the agent follows before or after a skill. There are no scripts to maintain.</p>
+        <div class="hooks">
+          <div class="hooks__text">
+            <p>Hooks live in <code>barespec/barespec.config.yml</code>, which <a class="link" href="#stage-config"><code>/init-config</code></a> creates. Each of the six steps takes a <code>pre</code> and a <code>post</code> list: <code>context</code>, <code>spec</code>, <code>plan</code>, <code>implement</code>, <code>review</code> and <code>visualize</code>.</p>
+            <ol class="hookflow" aria-label="Hook order">
+              <li><span class="hookflow__t">pre hooks</span><span class="hookflow__d">e.g. check git status</span></li>
+              <li><span class="hookflow__t">the skill</span><span class="hookflow__d">any BareSpec step</span></li>
+              <li><span class="hookflow__t">post hooks</span><span class="hookflow__d">e.g. run lint and tests</span></li>
+            </ol>
+            <p class="muted">The config file is optional. Without it, every skill runs without hooks.</p>
+          </div>
+          <figure class="code">
+            <figcaption class="code__bar"><span class="code__name">barespec/barespec.config.yml</span></figcaption>
+<pre class="code__pre"><code><span class="k">hooks:</span>
+  <span class="k">spec:</span>
+    <span class="k">pre:</span>
+      - "Check that the git working directory
+         is clean before creating the spec."
+  <span class="k">implement:</span>
+    <span class="k">pre:</span>
+      - "Run the existing test suite and confirm
+         it is green before starting."
+    <span class="k">post:</span>
+      - "Run 'npm run lint &amp;&amp; npm test' and fix
+         any failures before closing the spec."</code></pre>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Files -->
+      <section class="section wrap" id="files" aria-labelledby="files-title">
+        <h2 class="sticky-head" id="files-title">What lands in your repo.</h2>
+        <p class="lede">Everything lives in one <code>barespec/</code> folder, so it is easy to review, commit or ignore.</p>
+        <div class="hooks">
+          <ul class="plain">
+            <li><code>context.md</code> is shared by every skill.</li>
+            <li><code>spec.yaml</code> holds the requirements for one feature, <code>plan.md</code> its tasks.</li>
+            <li><code>visual.html</code> exists only if you ran <code>/spec-visualize</code>. Committing it is up to you.</li>
+          </ul>
+          <figure class="code">
+            <figcaption class="code__bar"><span class="code__name">your-project/</span></figcaption>
+<pre class="code__pre"><code>your-project/
+└── barespec/
+    ├── context.md
+    ├── barespec.config.yml   <span class="c"># optional</span>
+    └── specs/
+        ├── user-authentication/
+        │   ├── spec.yaml
+        │   ├── plan.md
+        │   └── visual.html   <span class="c"># optional</span>
+        └── csv-export/
+            ├── spec.yaml
+            └── plan.md</code></pre>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Command reference -->
+      <section class="section wrap" id="commands" aria-labelledby="commands-title">
+        <h2 class="sticky-head" id="commands-title">Command reference</h2>
         <p class="lede">Run the skills as slash commands in any compatible AI coding agent. Each step builds on the file the previous one wrote. The examples below are illustrative.</p>
 
         <article class="stage" id="stage-context" data-stage>
@@ -308,113 +408,66 @@ for the warehouse team.
           </figure>
         </article>
 
-        <div class="optional" id="optional">
-          <h3 class="optional__title">Read-only, whenever you want</h3>
-          <div class="optional__grid">
-            <div class="opt" id="opt-review">
-              <p class="stage__cmd"><code>/spec-code-review [fixed-point] [spec-name]</code></p>
-              <p>Reviews your diff along two independent axes, coding standards and spec, each run by its own sub-agent. It reports findings and never edits code or changes a spec’s status. With no arguments it reviews your uncommitted changes.</p>
-              <figure class="code">
-                <figcaption class="code__bar"><span class="code__name">example</span></figcaption>
-<pre class="code__pre"><code><span class="k">/spec-code-review</span> main user-auth</code></pre>
-              </figure>
-            </div>
-            <div class="opt" id="opt-visualize">
-              <p class="stage__cmd"><code>/spec-visualize [spec-name]</code></p>
-              <p>Renders a spec and its plan as <code>visual.html</code>: a requirement tree, a traceability matrix, task states and warnings for inconsistencies. A single self-contained page that works offline.</p>
-            </div>
+        <article class="stage" id="opt-review" data-stage>
+          <div class="stage__text">
+            <h3 class="stage__title"><span class="stage__n">5.0</span> Review the diff</h3>
+            <p class="stage__cmd"><code>/spec-code-review [fixed-point] [spec-name]</code></p>
+            <p>Optional and read-only. Reviews the diff between <code>HEAD</code> and a fixed point (a commit, branch or tag) along two independent axes, coding standards and spec, each run by its own sub-agent. With no fixed point it reviews your uncommitted changes.</p>
+            <p>It reports findings and never edits code, checks off tasks or changes a spec’s status. The spec comes from the argument, the branch name or a recently updated spec; with none, give a one-line description of the intent instead.</p>
           </div>
-          <p class="note"><code>barespec-guide</code> is a background skill, not a command. Agents load it automatically when a conversation mentions BareSpec.</p>
-        </div>
-      </section>
+          <figure class="code">
+            <figcaption class="code__bar"><span class="code__name">examples</span></figcaption>
+<pre class="code__pre"><code><span class="k">/spec-code-review</span>                   <span class="c"># uncommitted</span>
+<span class="k">/spec-code-review</span> main user-auth   <span class="c"># since main</span>
+<span class="k">/spec-code-review</span> v1.2.0           <span class="c"># since a tag</span></code></pre>
+          </figure>
+        </article>
 
-      <!-- Lifecycle -->
-      <section class="section wrap" id="lifecycle" aria-labelledby="life-title">
-        <h2 class="sticky-head" id="life-title">Status follows the work.</h2>
-        <p class="lede">The <code>status</code> field in <code>spec.yaml</code> tells you, and the next skill, where a feature stands.</p>
-        <ol class="life">
-          <li class="life__item">
-            <span class="chip">draft</span>
-            <p class="life__by">set by <code>/spec-create</code></p>
-            <p>Spec contract written, no plan yet.</p>
-          </li>
-          <li class="life__item">
-            <span class="chip">ready</span>
-            <p class="life__by">set by <code>/spec-plan</code></p>
-            <p>Plan generated, ready to implement.</p>
-          </li>
-          <li class="life__item">
-            <span class="chip">in-progress</span>
-            <p class="life__by">set by <code>/spec-implement</code></p>
-            <p>Implementation started.</p>
-          </li>
-          <li class="life__item">
-            <span class="chip">done</span>
-            <p class="life__by">set by <code>/spec-implement</code></p>
-            <p>Implementation completed.</p>
-          </li>
-        </ol>
-        <p class="note">A spec whose <code>requires</code> list names specs that are not <code>done</code> cannot be implemented yet. When a spec finishes, BareSpec reports which dependent specs are now unblocked.</p>
-      </section>
+        <article class="stage" id="opt-visualize" data-stage>
+          <div class="stage__text">
+            <h3 class="stage__title"><span class="stage__n">6.0</span> See the spec</h3>
+            <p class="stage__cmd"><code>/spec-visualize [spec-name]</code></p>
+            <p>Optional and read-only. Renders a spec and its plan as <code>visual.html</code>: status, version and dates, a requirement tree with a coverage badge on every ID, a traceability matrix, task states, and warnings for inconsistencies.</p>
+            <p>The page is self-contained, works offline and follows your system theme. Click an ID to highlight it in every view. A spec without a plan still renders, with a “No plan yet” banner, and each run overwrites the file.</p>
+          </div>
+          <figure class="code">
+            <figcaption class="code__bar"><span class="code__name">example</span></figcaption>
+<pre class="code__pre"><code><span class="k">/spec-visualize</span> user-auth
 
-      <!-- Hooks -->
-      <section class="section wrap" id="hooks" aria-labelledby="hooks-title">
-        <h2 class="sticky-head" id="hooks-title">Add your own steps.</h2>
-        <p class="lede">Hooks are plain-text instructions the agent follows before or after a skill. There are no scripts to maintain.</p>
-        <div class="hooks" id="init-config">
-          <div class="hooks__text">
-            <p>Run <code>/init-config</code> to create or update <code>barespec/barespec.config.yml</code>. Each of the six steps takes a <code>pre</code> and a <code>post</code> list: <code>context</code>, <code>spec</code>, <code>plan</code>, <code>implement</code>, <code>review</code> and <code>visualize</code>.</p>
-            <ol class="hookflow" aria-label="Hook order">
-              <li><span class="hookflow__t">pre hooks</span><span class="hookflow__d">e.g. check git status</span></li>
-              <li><span class="hookflow__t">the skill</span><span class="hookflow__d">any BareSpec step</span></li>
-              <li><span class="hookflow__t">post hooks</span><span class="hookflow__d">e.g. run lint and tests</span></li>
-            </ol>
-            <p class="muted">The config file is optional. Without it, every skill runs without hooks.</p>
+barespec/specs/user-auth/visual.html</code></pre>
+          </figure>
+        </article>
+
+        <article class="stage" id="stage-config" data-stage>
+          <div class="stage__text">
+            <h3 class="stage__title"><span class="stage__n">7.0</span> Customize the workflow</h3>
+            <p class="stage__cmd"><code>/init-config</code></p>
+            <p>Optional. Creates or updates <code>barespec/barespec.config.yml</code>, the file where you write custom instructions to run before or after each BareSpec step. If the file exists it shows your current hooks and asks whether to update them or reset to the default template.</p>
+            <p>It then asks about every hook slot in one go and writes only the events that have an instruction. What hooks are and which steps accept them is covered in <a class="link" href="#hooks">Hooks</a>.</p>
           </div>
           <figure class="code">
             <figcaption class="code__bar"><span class="code__name">barespec/barespec.config.yml</span></figcaption>
 <pre class="code__pre"><code><span class="k">hooks:</span>
-  <span class="k">spec:</span>
+  <span class="k">context:</span>
     <span class="k">pre:</span>
-      - "Check that the git working directory
-         is clean before creating the spec."
-  <span class="k">implement:</span>
-    <span class="k">pre:</span>
-      - "Run the existing test suite and confirm
-         it is green before starting."
+      - "Check whether a context.md already exists
+         in a non-standard location and warn me."
+  <span class="k">plan:</span>
     <span class="k">post:</span>
-      - "Run 'npm run lint &amp;&amp; npm test' and fix
-         any failures before closing the spec."</code></pre>
+      - "Summarize the task count and estimated
+         scope back to me."
+  <span class="k">review:</span>
+    <span class="k">post:</span>
+      - "Write the findings and action items to
+         review-summary.md in the spec folder."
+  <span class="k">visualize:</span>
+    <span class="k">post:</span>
+      - "Open the generated visual.html in the
+         default browser."</code></pre>
           </figure>
-        </div>
-      </section>
+        </article>
 
-      <!-- Files -->
-      <section class="section wrap" id="files" aria-labelledby="files-title">
-        <h2 class="sticky-head" id="files-title">What lands in your repo.</h2>
-        <p class="lede">Everything lives in one <code>barespec/</code> folder, so it is easy to review, commit or ignore.</p>
-        <div class="hooks">
-          <ul class="plain">
-            <li><code>context.md</code> is shared by every skill.</li>
-            <li><code>spec.yaml</code> holds the requirements for one feature, <code>plan.md</code> its tasks.</li>
-            <li><code>visual.html</code> exists only if you ran <code>/spec-visualize</code>. Committing it is up to you.</li>
-          </ul>
-          <figure class="code">
-            <figcaption class="code__bar"><span class="code__name">your-project/</span></figcaption>
-<pre class="code__pre"><code>your-project/
-└── barespec/
-    ├── context.md
-    ├── barespec.config.yml   <span class="c"># optional</span>
-    └── specs/
-        ├── user-authentication/
-        │   ├── spec.yaml
-        │   ├── plan.md
-        │   └── visual.html   <span class="c"># optional</span>
-        └── csv-export/
-            ├── spec.yaml
-            └── plan.md</code></pre>
-          </figure>
-        </div>
+        <p class="note"><code>barespec-guide</code> is a background skill, not a command. Agents load it automatically when a conversation mentions BareSpec.</p>
       </section>
     </main>
 
