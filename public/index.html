@@ -79,6 +79,12 @@
           <li><a class="rail__link rail__link--cmd" href="#stage-config">/init-config</a></li>
         </ul>
       </div>
+      <div class="rail__sec">
+        <p class="rail__group">Example</p>
+        <ul class="rail__list">
+          <li><a class="rail__link" href="example/visual.html">Visual spec page</a></li>
+        </ul>
+      </div>
       <p class="rail__empty" id="rail-empty" hidden>No match. Try “install” or “hooks”.</p>
     </nav>
 
@@ -429,6 +435,8 @@ for the warehouse team.
             <p class="stage__cmd"><code>/spec-visualize [spec-name]</code></p>
             <p>Optional and read-only. Renders a spec and its plan as <code>visual.html</code>: status, version and dates, a requirement tree with a coverage badge on every ID, a traceability matrix, task states, and warnings for inconsistencies.</p>
             <p>The page is self-contained, works offline and follows your system theme. Click an ID to highlight it in every view. A spec without a plan still renders, with a “No plan yet” banner, and each run overwrites the file.</p>
+            <p><a class="btn btn--primary" href="example/visual.html">Open the example page</a></p>
+            <p class="muted">Generated from an invented <code>user-auth</code> spec: <a class="link" href="https://github.com/AlessioScarfone/barespec/blob/main/public/example/spec.yaml">spec.yaml</a> and <a class="link" href="example/plan.md">plan.md</a>.</p>
           </div>
           <figure class="code">
             <figcaption class="code__bar"><span class="code__name">example</span></figcaption>

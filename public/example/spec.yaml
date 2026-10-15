@@ -1,0 +1,55 @@
+feature:
+  name: user-auth
+  version: 0.2.0
+  description: >-
+    Email and password sign-in with cookie-based session handling for inventory-api,
+    a small TypeScript REST service built on Fastify and tested with Vitest. Lets
+    registered users sign in, stay signed in across requests, and sign out, so that
+    the inventory endpoints can be restricted to known users.
+  prerequisites:
+    - None
+  status: in-progress
+  requires: []
+  created: 2026-10-08
+  updated: 2026-10-14
+
+components:
+  LOGIN:
+    name: Email login
+    description: Sign in with email and password.
+    requirements:
+      1: A registered user can sign in with email and password.
+      1-1: A wrong password returns an error without revealing if the email exists.
+      2: A successful sign-in sets a session cookie on the response.
+      3: After 5 failed sign-in attempts for the same email within 15 minutes, further attempts are rejected with status 429.
+      3-1: A rejected attempt includes a `Retry-After` header with the seconds left until the lockout ends.
+
+  SESSION:
+    name: Session handling
+    description: Sign out and session expiry.
+    requirements:
+      1: A signed-in user can sign out, which invalidates the session immediately.
+      2: A session expires after 8 hours without a request.
+      3: A request with an expired or unknown session cookie is answered with status 401.
+
+constraints:
+  SECURITY:
+    name: Credential and cookie safety
+    requirements:
+      1: Passwords are stored only as argon2id hashes, never in plain text.
+      2: Session cookies are marked `HttpOnly` and `Secure`.
+
+non_goals:
+  - Social login (Google, GitHub) and other third-party identity providers.
+  - Password reset and email verification flows.
+  - Self-service registration; users are created by an admin script.
+
+technical_notes: >-
+  Sessions are stored server-side in an in-memory map behind a small interface in
+  `src/auth/session.ts`, so a Redis store can replace it later without touching
+  the routes. The session id is a random 32-byte token carried in a cookie handled
+  by `@fastify/cookie`. Routes are registered as a Fastify plugin from `src/app.ts`.
+  Failed-attempt counters are kept per email in the same process and reset when a
+  sign-in succeeds.
+
+development_notes:
