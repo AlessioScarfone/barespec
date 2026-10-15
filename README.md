@@ -14,6 +14,7 @@
 ---
 
 - [How It Works](#how-it-works)
+- [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Skills](#skills)
   - [`/init-context` — Project Context](#init-context--project-context)
@@ -43,6 +44,43 @@
 
 > [!TIP]
 > At each step, there can be optional pre/post hooks defined in `barespec.config.yml` to run additional instructions before or after the main workflow. Check the [`/init-config` for custom workflow hook configuration](#init-config--customize-workflow-with-custom-prepost-hooks).
+
+## Installation
+
+BareSpec is published as a plugin through the `alessioscarfone` marketplace (this repository). Pick the tool you use:
+
+**VS Code (GitHub Copilot)**
+
+1. Add the marketplace to your user settings:
+   ```json
+   "chat.plugins.marketplaces": ["AlessioScarfone/barespec"]
+   ```
+2. Open the Extensions view, search `@agentPlugins`, and install **barespec**.
+
+Alternatively, run `Chat: Install Plugin From Source` from the Command Palette and enter `https://github.com/AlessioScarfone/barespec`.
+
+**GitHub Copilot CLI**
+
+```bash
+copilot plugin marketplace add AlessioScarfone/barespec
+copilot plugin install barespec@alessioscarfone
+```
+
+**Claude Code**
+
+```
+/plugin marketplace add AlessioScarfone/barespec
+/plugin install barespec@alessioscarfone
+```
+
+> [!NOTE]
+> In Claude Code, plugin skills are namespaced: use `/barespec:spec-create` instead of `/spec-create`.
+
+**Skills only (any agent)**
+
+```bash
+npx skills add AlessioScarfone/barespec
+```
 
 ## Quick Start
 

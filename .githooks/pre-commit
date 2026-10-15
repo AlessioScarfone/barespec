@@ -1,0 +1,14 @@
+#!/bin/sh
+# Blocks the commit when plugin.json and marketplace.json disagree on the version (staged content).
+
+read_version() {
+  git show ":$1" | python3 -c "import json,sys; d=json.load(sys.stdin); print($2)"
+}
+
+plugin=$(read_version plugin.json "d['version']") || exit 1
+market=$(read_version .claude-plugin/marketplace.json "d['plugins'][0]['version']") || exit 1
+
+if [ "$plugin" != "$market" ]; then
+  echo "Version mismatch: plugin.json=$plugin, .claude-plugin/marketplace.json=$market" >&2
+  exit 1
+fi

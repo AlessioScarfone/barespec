@@ -1,0 +1,26 @@
+{
+  "name": "alessioscarfone",
+  "owner": {
+    "name": "Alessio Scarfone",
+    "url": "https://github.com/AlessioScarfone"
+  },
+  "metadata": {
+    "description": "Agent plugins by Alessio Scarfone."
+  },
+  "plugins": [
+    {
+      "name": "barespec",
+      "source": "./",
+      "version": "0.3.0",
+      "description": "Minimal Spec-Driven Development for AI coding agents.",
+      "author": {
+        "name": "Alessio Scarfone",
+        "url": "https://github.com/AlessioScarfone"
+      },
+      "homepage": "https://alessioscarfone.github.io/barespec/",
+      "repository": "https://github.com/AlessioScarfone/barespec",
+      "license": "MIT",
+      "keywords": ["spec-driven", "development", "AI", "coding", "agents"]
+    }
+  ]
+}
