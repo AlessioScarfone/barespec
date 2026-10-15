@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logo/barespec-logo-dark.svg">
-    <img src="assets/logo/barespec-logo.svg" alt="BareSpec logo" width="120" height="120">
+    <source media="(prefers-color-scheme: dark)" srcset="public/assets/barespec-logo-dark.svg">
+    <img src="public/assets/barespec-logo.svg" alt="BareSpec logo" width="120" height="120">
   </picture>
 </p>
 

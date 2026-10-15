@@ -1,0 +1,91 @@
+/* Hallmark · tokens · theme: Almanac (editorial reference register) · cool paper, teal accent */
+
+:root {
+  color-scheme: light dark;
+
+  /* colour: light */
+  --color-paper:        oklch(98.2% 0.005 235);
+  --color-paper-2:      oklch(95.8% 0.007 235);
+  --color-rule:         oklch(89%   0.008 235);
+  --color-rule-2:       oklch(80%   0.010 235);
+  --color-ink:          oklch(24%   0.020 245);
+  --color-ink-2:        oklch(34%   0.020 245);
+  --color-muted:        oklch(46%   0.018 240);
+  --color-accent:       oklch(46%   0.110 190);
+  --color-accent-hover: oklch(39%   0.110 190);
+  --color-accent-ink:   oklch(99%   0.004 190);
+  --color-accent-tint:  oklch(94%   0.030 190);
+  --color-focus:        oklch(52%   0.120 190);
+  --color-ok:           oklch(42%   0.120 155);
+  --color-err:          oklch(46%   0.180 27);
+  --color-code-bg:      var(--color-paper-2);
+
+  /* type */
+  --font-display: "Newsreader", ui-serif, Georgia, serif;
+  --font-body:    "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-md:   1.125rem;
+  --text-lg:   1.375rem;
+  --text-xl:   1.75rem;
+  --text-display-s: clamp(2.5rem, 3.6vw + 1rem, 4rem);
+
+  /* space: 4pt scale */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --page-gutter: clamp(1rem, 4vw, 3rem);
+  --page-max: 62rem;
+  --rail-width: 15rem;
+  --banner-height: 3.5rem;
+
+  /* shape */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --rule-hair: 1px;
+
+  /* motion: Almanac runs at 0.85x of the default durations */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.7, 0, 0.84, 0);
+  --dur-micro: 100ms;
+  --dur-short: 190ms;
+  --dur-long:  360ms;
+
+  /* z-index */
+  --z-base:       1;
+  --z-sticky:     200;
+  --z-sticky-nav: 300;
+  --z-modal:      400;
+}
+
+@media (min-width: 60rem) {
+  :root { --banner-height: 0rem; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper:        oklch(17%   0.012 240);
+    --color-paper-2:      oklch(20.5% 0.014 240);
+    --color-rule:         oklch(29%   0.014 240);
+    --color-rule-2:       oklch(38%   0.015 240);
+    --color-ink:          oklch(94%   0.006 240);
+    --color-ink-2:        oklch(85%   0.008 240);
+    --color-muted:        oklch(70%   0.012 240);
+    --color-accent:       oklch(76%   0.110 190);
+    --color-accent-hover: oklch(82%   0.110 190);
+    --color-accent-ink:   oklch(17%   0.020 240);
+    --color-accent-tint:  oklch(27%   0.040 190);
+    --color-focus:        oklch(78%   0.110 190);
+    --color-ok:           oklch(78%   0.120 155);
+    --color-err:          oklch(75%   0.140 27);
+  }
+}
