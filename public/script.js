@@ -199,7 +199,9 @@
       });
       const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
       let current = matches[matches.length - 1] || null;
-      if (pinned && (matches.includes(pinned) || atBottom)) current = pinned;
+      const pinnedBox = pinned && pinned.getBoundingClientRect();
+      const pinnedShown = pinnedBox && pinnedBox.top < window.innerHeight * 0.6 && pinnedBox.bottom > 0;
+      if (pinned && (pinnedShown || atBottom)) current = pinned;
       else if (atBottom) current = targets[targets.length - 1];
       links.forEach((link) => {
         if (current && link.getAttribute("href") === `#${current.id}`) link.setAttribute("aria-current", "true");
@@ -209,10 +211,29 @@
     };
 
     // A clicked link wins over siblings that share the probe line until the user scrolls.
+    // The observer only fires on band crossings, so re-run once the smooth scroll stops.
+    let settling = 0;
+    const updateWhenStill = () => {
+      cancelAnimationFrame(settling);
+      let last = -1;
+      let still = 0;
+      const tick = () => {
+        if (window.scrollY === last) {
+          still += 1;
+          if (still >= 6) { update(); return; }
+        } else {
+          still = 0;
+          last = window.scrollY;
+        }
+        settling = requestAnimationFrame(tick);
+      };
+      tick();
+    };
     links.forEach((link) => {
       link.addEventListener("click", () => {
         pinned = document.getElementById(link.getAttribute("href").slice(1));
         update();
+        updateWhenStill();
       });
     });
     const unpin = () => { pinned = null; };
